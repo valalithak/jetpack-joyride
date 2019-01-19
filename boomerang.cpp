@@ -1,23 +1,22 @@
 #include "boomerang.h"
 #include "main.h"
 #include<bits/stdc++.h>
+#include<math.h>
 
 using namespace std;
 
 Boomerang::Boomerang(color_t color) {
-    this->position = glm::vec3(-2, 0, 0);
-    //this->size = 0.2;
-    //this->onground = true;
-    //speed = 0.2; // Speed of left-right key press in air
-    //speedVertical = 0.0; // Vertical speed in air - UP
-    //speedVerticalDown = 0.0; // Vertical speed in air - DOWN
-    //goDown = false;
-    //acc_g = 0.1; // Gravity acceleration
-    //initVelocity = 0.16;
+    this->radius_of_path = 2;
+    this->position = glm::vec3(-this->radius_of_path, 0, 0); // mod of x coordinate here will be the radius of trajectory
+    this->size = 0.2;
+    this->onground = true;
+    speed = 0.2; // Speed of left-right key press in air
+    acc_g = 0.1; // Gravity acceleration
 
-    //this->speedHoriz = 0.0;
-
-
+    count = 0;
+    flag = 0;
+    angle_rad = 3.14159/180;
+    degree = 180;
     GLfloat vertex_buffer_data[18];
 
 
@@ -64,20 +63,46 @@ void Boomerang::draw(glm::mat4 VP) {
 //    this->position = glm::vec3(x, y, 0);
 //}
 
-//void Boomerang::tick() {
-    //this->ground = false;
-    /*if(this->onground == false)
+void Boomerang::tick() {
+
+    if(degree!=0 && flag == 0)
     {
+        this->position.x = this->radius_of_path*cos(angle_rad*degree)/screen_zoom;
+        this->position.y = this->radius_of_path*sin(angle_rad*degree)/screen_zoom;
+        degree--;
+        //cout << 2*cos(angle_rad*degree) << " " << 2*sin(angle_rad*degree) << endl;
+        //cout << degree << " " <<  flag << " " << "loop1" <<  endl;
+    }
+
+    if(degree%180 == 0 && this->position.y > (floorHeight)/screen_zoom)
+    {
+        if(flag==0)
+            flag = 1;
+        else if(flag==2)
+            flag =0;
         this->position.y -= acc_g;
-        //cout << 1 << endl;
-    }
-    if(this->position.y >= (floorHeight + 19*this->size)/screen_zoom){
-        this->position.y = (floorHeight + 19*this->size)/screen_zoom;
-        cout << 2 << endl;
-    }
-    if(this->position.y <= 0){
-        this->onground = true;
 
-    }*/
+        //cout << degree << " " <<  flag << " " << "loop2" <<  endl;
+    }
+    if(flag > 0 && this->position.y <= floorHeight/screen_zoom){
 
-//}
+        degree = 0;
+
+        if(flag == 1)
+            flag = 2;
+        else if(flag == 2)
+        {
+            flag = 0;
+            degree = 180;
+        }
+        //cout << degree << " " <<  flag << " " << "loop3" <<  endl;
+    }
+    if(flag == 2 && degree <= 180)
+    {
+        this->position.x = 2*cos(angle_rad*degree);
+        this->position.y = 2*sin(angle_rad*degree);
+        degree++;
+        //cout << degree << " " <<  flag << " " << "loop4" <<  endl;
+    }
+
+}

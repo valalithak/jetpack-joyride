@@ -76,7 +76,7 @@ void Ball::tick() {
     }
     if(this->position.y >= (floorHeight + 22*this->radius)/screen_zoom){
         this->position.y = (floorHeight + 22*this->radius)/screen_zoom;
-        cout << 2 << endl;
+        //cout << 2 << endl;
     }
     if(this->position.y <= 0.6){
         this->onground = true;

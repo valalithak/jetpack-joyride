@@ -59,7 +59,7 @@ void Triangle::tick() {
     }
     if(this->position.y >= (floorHeight + 19*this->size)/screen_zoom){
         this->position.y = (floorHeight + 19*this->size)/screen_zoom;
-        cout << 2 << endl;
+        //cout << 2 << endl;
     }
     if(this->position.y <= 0){
         this->onground = true;

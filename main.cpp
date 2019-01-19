@@ -26,6 +26,7 @@ Coin coins[NUM_COINS];
 float floorHeight = -0.7;
 int i, j;
 int score = 0;
+int tick_count = 0;
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 
@@ -169,7 +170,7 @@ void tick_elements() {
 
     player.tick();
     tr.tick();
-//    bmr.tick();
+    bmr.tick();
 
     if((player.position.y > 0.7))
     {
@@ -258,6 +259,8 @@ int main(int argc, char **argv) {
         // Process timers
 
         if (t60.processTick()) {
+
+            tick_count++;
 
             // OpenGL Draw commands
             draw();

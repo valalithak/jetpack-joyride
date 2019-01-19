@@ -13,7 +13,11 @@ public:
     void draw(glm::mat4 VP);
     void set_position(float x, float y);
     void tick();
-
+    int count;
+    int flag;
+    float angle_rad;
+    int degree;
+    int radius_of_path;
     void magTick(int type);
     double speed;
     double speedVertical;
