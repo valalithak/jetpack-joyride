@@ -9,7 +9,7 @@ Ground::Ground(float top, float bottom) {
     float up2 = division - center;
     float down2 = -40.0;
 
-    float length = 40.0;
+    float length = 2000.0;
 
     static const GLfloat vertex_buffer_data_2[] = {
         -length, down2, 0,

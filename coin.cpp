@@ -9,11 +9,12 @@ Coin::Coin(float x, float minHeight)
     this->rotation = (rand()%(1+2*max_angle)) - max_angle;
     this->rotate = glm::rotate((float) (this->rotation * M_PI / 180.0f), glm::vec3(0, 0, 1));
 
-    float diff = 2.0 - minHeight;
+    float diff = 0.1 + rand()%4 - (minHeight-2.5);
     float multiplier = ((float) rand()) / (float) RAND_MAX;
     float y = minHeight + diff*multiplier;
 
-    float Radii[3] = {0.09,0.1,0.2};
+    float Radii[3] = {0.07,0.15,0.2};
+    float coin_score[3] = {10, 20, 30};
     color_t Colors[3] = {COLOR_ORANGE, COLOR_YELLOW, COLOR_RED};
 
     this->position = glm::vec3(x, y, 0);
@@ -23,6 +24,7 @@ Coin::Coin(float x, float minHeight)
 
     this->type = rand()%3;
     this->radius = Radii[this->type];
+    this->score = coin_score[this->type];
 
     float n = 360;
     float r = this->radius;

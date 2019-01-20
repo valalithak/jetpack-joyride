@@ -166,22 +166,27 @@ void pan_down()
     }
 }
 
-void tick_elements() {
+void tick_elements()
+{
 
     player.tick();
     tr.tick();
     bmr.tick();
+    if(detect_collision_boomerang())
+        score-=10;
 
     if((player.position.y > 0.7))
     {
+
+
         for(i=0; i<NUM_COINS; i++)
         {
             if(coins[i].alive && detect_collision(i))
             {
-                    //cout << "collided" << endl;
-                    score++;
+                    score+= coins[i].score;
                     coins[i].alive = false;
             }
+
         }
     }
 
@@ -217,7 +222,7 @@ void initGL(GLFWwindow *window, int width, int height) {
 
     for(i=0; i<NUM_COINS; i++)
     {
-        coins[i] = Coin(1.0+(i*1.5), floorHeight + 3*player.radius + i); // on right side of origin
+        coins[i] = Coin(1.0+(i*1.5), floorHeight + 4*player.radius + i); // on right side of origin
 
     }
 
@@ -295,6 +300,17 @@ bool detect_collision(int i)
     if(abso(player.position.x - coin.position.x) < (player.radius + coin.radius)
         && player.position.y > coin.position.y
         && player.position.y - coin.position.y <= (player.radius + coin.radius)
+        ) return true;
+    return false;
+}
+
+bool detect_collision_boomerang()
+{
+
+    //if(player.speedVertical > 0) return false;
+    if(abso(player.position.x - bmr.position.x) < (player.radius + bmr.size)
+        && player.position.y > bmr.position.y
+        && player.position.y - bmr.position.y <= (player.radius + bmr.size)
         ) return true;
     return false;
 }

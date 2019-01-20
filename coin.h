@@ -16,6 +16,7 @@ public:
     double speed;
     bool alive;
     int type;
+    int score;
     float rotation;
     glm::mat4 rotate;
     glm::mat4 rotMatrix;

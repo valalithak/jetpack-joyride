@@ -75,6 +75,7 @@ void pan_down();
 void jump();
 float abso(float x);
 bool detect_collision(int i);
+bool detect_collision_boomerang();
 
 
 // ---- Colors ----
