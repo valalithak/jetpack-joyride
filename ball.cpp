@@ -4,9 +4,9 @@
 
 using namespace std;
 
-Ball::Ball(float x, float y, color_t color) {
+Ball::Ball(float x, float y, float rad, color_t color) {
     this->position = glm::vec3(x, y, 0);
-    this->radius = 0.2;
+    this->radius = rad; // 0.2 for player
     this->onground = true;
     speed = 0.2; // Speed of left-right key press in air
     goDown = false;

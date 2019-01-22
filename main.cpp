@@ -7,6 +7,8 @@
 #include "triangle.h"
 #include "boomerang.h"
 #include "powerup.h"
+#include "powerup.h"
+#include "fire.h"
 using namespace std;
 
 GLMatrices Matrices;
@@ -18,13 +20,15 @@ GLFWwindow *window;
 **************************/
 
 #define NUM_COINS 500
-
+#define NUM_FIRES 5;
 Ball player;
+Fire fire;
 Triangle tr;
 Boomerang bmr;
 Powerup p_up;
 Ground ground;
 Coin coins[NUM_COINS];
+Ball fire_cylinder[2*NUM_FIRES];
 float floorHeight = -0.7;
 int i, j;
 int score = 0;
@@ -69,10 +73,15 @@ void draw() {
     ground.draw(VP);
     player.draw(VP);
     tr.draw(VP);
+    fire.draw(VP);
+    fire_cylinder[0].draw(VP);
+    fire_cylinder[1].draw(VP);
+
     if(bmr.collided == false)
         bmr.draw(VP);
     if(p_up.active)
         p_up.draw(VP);
+
     for(i=0; i<NUM_COINS; i++)
     {
         if(coins[i].alive) {coins[i].draw(VP);}
@@ -98,11 +107,6 @@ void tick_input(GLFWwindow *window) {
         player.position.y += player.speed;
         tr.onground = false;
         tr.position.y += player.speed;
-
-
-
-        //cout << player.position.y << endl;
-
     }
 
     int LEFT  = glfwGetKey(window, GLFW_KEY_LEFT);
@@ -183,8 +187,8 @@ void tick_elements()
         score-=10;
         bmr.collided = true;
     }
-        cout << player.position.x << " " << p_up.position.x << endl;
-        cout << player.position.y << " " << p_up.position.y << endl;
+        // cout << player.position.x << " " << p_up.position.x << endl;
+        // cout << player.position.y << " " << p_up.position.y << endl;
 
     if((player.position.y > 0.7))
     {
@@ -233,11 +237,20 @@ void initGL(GLFWwindow *window, int width, int height) {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
 
-    player      = Ball(0, 0.7, COLOR_GREY);
+    player      = Ball(0, 0.7,0.2, COLOR_GREY);
     tr          = Triangle(COLOR_YELLOW);
     bmr         = Boomerang(COLOR_DARKRED);
     ground      = Ground(floorHeight + 3*player.radius, -4.0);
     p_up        = Powerup(COLOR_SEAGREEN);
+    int xfire_1 = 1;
+    int yfire_1 = 1;
+    int xfire_2 = 3;
+    int yfire_2 = 2;
+    fire        = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
+    fire_cylinder[0] = Ball(xfire_1+1, yfire_1+1, 0.1, COLOR_FIRE);
+    fire_cylinder[1] = Ball(xfire_2+1, yfire_2+1, 0.1, COLOR_FIRE);
+
+
     //cout << player.position.y << endl;
 
     for(i=0; i<NUM_COINS; i++)

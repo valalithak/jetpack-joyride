@@ -12,7 +12,8 @@ const color_t COLOR_BLUE = { 51, 51, 255 }; // Pacman - blue
 
 const color_t COLOR_GREY = { 64, 64, 64 }; // Player - grey
 const color_t COLOR_DARKBLUE = { 0, 112, 103 }; // Pond - dark blue
-const color_t COLOR_ORANGE = { 230, 92, 0 }; // Trampoline - orange
+const color_t COLOR_ORANGE = { 230, 160, 0 }; // Trampoline - orange
 const color_t COLOR_DARKRED = { 112, 0, 0 }; // Magnet - maroon
 const color_t COLOR_LIGHTGREY = { 136, 136, 136 }; // Magnet ends - light grey
 const color_t COLOR_GOLD = { 218, 165, 32 }; // Porcupine - gold
+const color_t COLOR_FIRE = { 240,80,0}; // Trampoline - orange
