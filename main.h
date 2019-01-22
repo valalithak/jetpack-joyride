@@ -76,7 +76,7 @@ void jump();
 float abso(float x);
 bool detect_collision(int i);
 bool detect_collision_boomerang();
-
+bool detect_collision_bonus();
 
 // ---- Colors ----
 extern const color_t COLOR_BACKGROUND;

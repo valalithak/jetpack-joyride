@@ -15,6 +15,9 @@ public:
     void tick();
     double speed;
     double acc_g;
+    bool active;
+    //int count;
+    //bool fl;
 
 private:
     VAO *object;

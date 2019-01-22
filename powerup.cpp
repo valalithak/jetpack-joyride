@@ -5,12 +5,14 @@
 using namespace std;
 // DIAMOND SHAPED POWERUP WHICH SHOULD APPEAR RANDOMLY AND GIVE BONUS TO PLAYER
 Powerup::Powerup(color_t color) {
-    int x_coord = 3;
-    int y_coord = 1;
+    this->active = true;
+    int x_coord = rand()%3 + 1;
+    int y_coord = rand()%2 + 1;
     this->position = glm::vec3(x_coord, y_coord, 0);
     this->size = 0.2;
     // this->onground = true;
-    speed = 0.2; // Speed of left-right key press in air
+    speed = 0.12; // Speed of left-right key press in air
+
 
     GLfloat vertex_buffer_data[18];
 
@@ -55,10 +57,31 @@ void Powerup::draw(glm::mat4 VP) {
 void Powerup::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
 }
+int c = 0;
+bool fl = 0;
+void Powerup::tick()
+{
 
-void Powerup::tick() {
+    cout << "flag: " << fl << " " << "count: " << c << endl;
 
-    return;
+    if(fl == 0)
+    {
 
+        this->position.x += this->speed;
+        c++;
+    }
+    if(c==100)
+    {
+        if(fl==1)
+            fl = 0;
+        else
+            fl = 1;
+        c = 0;
+    }
+    if(fl == 1)
+    {
+        this->position.x -= this->speed;
+        c++;
+    }
 
 }

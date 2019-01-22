@@ -70,7 +70,8 @@ void draw() {
     player.draw(VP);
     tr.draw(VP);
     bmr.draw(VP);
-    p_up.draw(VP);
+    if(p_up.active)
+        p_up.draw(VP);
     for(i=0; i<NUM_COINS; i++)
     {
         if(coins[i].alive) {coins[i].draw(VP);}
@@ -175,13 +176,14 @@ void tick_elements()
     player.tick();
     tr.tick();
     bmr.tick();
+    p_up.tick();
     if(detect_collision_boomerang())
         score-=10;
+        cout << player.position.x << " " << p_up.position.x << endl;
+        cout << player.position.y << " " << p_up.position.y << endl;
 
     if((player.position.y > 0.7))
     {
-
-
         for(i=0; i<NUM_COINS; i++)
         {
             if(coins[i].alive && detect_collision(i))
@@ -191,6 +193,13 @@ void tick_elements()
             }
 
         }
+
+    }
+    if(p_up.active && detect_collision_bonus())
+    {
+        score += 100;
+        cout << "collided" << endl;
+        p_up.active = false;
     }
 
     float left = screen_center_x - 4/screen_zoom;
@@ -251,7 +260,8 @@ void initGL(GLFWwindow *window, int width, int height) {
 }
 
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     srand(time(0));
     int width  = 800;
     int height = 800;
@@ -269,6 +279,8 @@ int main(int argc, char **argv) {
         if (t60.processTick()) {
 
             tick_count++;
+
+
 
             // OpenGL Draw commands
             draw();
@@ -318,7 +330,22 @@ bool detect_collision_boomerang()
     return false;
 }
 
-void reset_screen() {
+bool detect_collision_bonus()
+{
+
+    //if(player.speedVertical > 0) return false;
+    cout << player.position.x << " " << p_up.position.x << endl;
+    cout << player.position.y << " " << p_up.position.y << endl;
+
+
+
+    if(abso(player.position.x - p_up.position.x) <= 1 && abso(player.position.y - p_up.position.y) < 0.25)
+        return true;
+    return false;
+}
+
+void reset_screen()
+{
     float top    = screen_center_y + 4 / screen_zoom;
     float bottom = screen_center_y - 4 / screen_zoom;
     float left   = screen_center_x - 4 / screen_zoom;
