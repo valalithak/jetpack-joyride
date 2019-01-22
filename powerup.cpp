@@ -7,7 +7,7 @@ using namespace std;
 Powerup::Powerup(color_t color) {
     this->active = true;
     int x_coord = rand()%3 + 1;
-    int y_coord = rand()%2 + 1;
+    int y_coord =  1;
     this->position = glm::vec3(x_coord, y_coord, 0);
     this->size = 0.2;
     // this->onground = true;

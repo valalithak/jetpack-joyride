@@ -27,6 +27,7 @@ public:
     double initVelocity;
     bool onground;
     float speedHoriz;
+    bool collided;
 
 
 private:

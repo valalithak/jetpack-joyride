@@ -6,6 +6,7 @@
 using namespace std;
 
 Boomerang::Boomerang(color_t color) {
+    this->collided = false;
     this->radius_of_path = 2;
     this->position = glm::vec3(-this->radius_of_path, 0, 0); // mod of x coordinate here will be the radius of trajectory
     this->size = 0.2;

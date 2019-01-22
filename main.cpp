@@ -69,7 +69,8 @@ void draw() {
     ground.draw(VP);
     player.draw(VP);
     tr.draw(VP);
-    bmr.draw(VP);
+    if(bmr.collided == false)
+        bmr.draw(VP);
     if(p_up.active)
         p_up.draw(VP);
     for(i=0; i<NUM_COINS; i++)
@@ -178,7 +179,10 @@ void tick_elements()
     bmr.tick();
     p_up.tick();
     if(detect_collision_boomerang())
+    {
         score-=10;
+        bmr.collided = true;
+    }
         cout << player.position.x << " " << p_up.position.x << endl;
         cout << player.position.y << " " << p_up.position.y << endl;
 
@@ -205,14 +209,18 @@ void tick_elements()
     float left = screen_center_x - 4/screen_zoom;
     if(player.position.x - player.radius < left)
     {
-        if(player.position.x - player.radius < -40.0) player.position.x = -40.0 + player.radius;
+        if(player.position.x - player.radius < -40.0)
+            player.position.x = -40.0 + player.radius;
+
         screen_center_x = (player.position.x - player.radius) + 4/screen_zoom;
     }
 
     float right = screen_center_x + 4/screen_zoom;
     if(player.position.x + player.radius > right)
     {
-        if(player.position.x + player.radius > 40.0) player.position.x = 40.0 - player.radius;
+        if(player.position.x + player.radius > 40.0)
+            player.position.x = 40.0 - player.radius;
+
         screen_center_x = (player.position.x + player.radius) - 4/screen_zoom;
     }
 
