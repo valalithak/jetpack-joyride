@@ -6,6 +6,7 @@
 #include<bits/stdc++.h>
 #include "triangle.h"
 #include "boomerang.h"
+#include "powerup.h"
 using namespace std;
 
 GLMatrices Matrices;
@@ -21,6 +22,7 @@ GLFWwindow *window;
 Ball player;
 Triangle tr;
 Boomerang bmr;
+Powerup p_up;
 Ground ground;
 Coin coins[NUM_COINS];
 float floorHeight = -0.7;
@@ -68,6 +70,7 @@ void draw() {
     player.draw(VP);
     tr.draw(VP);
     bmr.draw(VP);
+    p_up.draw(VP);
     for(i=0; i<NUM_COINS; i++)
     {
         if(coins[i].alive) {coins[i].draw(VP);}
@@ -217,7 +220,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     tr          = Triangle(COLOR_YELLOW);
     bmr         = Boomerang(COLOR_DARKRED);
     ground      = Ground(floorHeight + 3*player.radius, -4.0);
-
+    p_up        = Powerup(COLOR_SEAGREEN);
     //cout << player.position.y << endl;
 
     for(i=0; i<NUM_COINS; i++)
