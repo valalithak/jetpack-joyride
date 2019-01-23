@@ -69,7 +69,7 @@ void Ball::set_position(float x, float y) {
 
 void Ball::tick() {
     //this->ground = false;
-    cout << "ball y : " << this->position.y << endl;
+
     if(this->onground == false)
     {
         this->position.y -= acc_g;

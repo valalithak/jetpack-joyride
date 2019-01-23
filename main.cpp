@@ -9,6 +9,7 @@
 #include "powerup.h"
 #include "powerup.h"
 #include "fire.h"
+#include "magnet.h"
 using namespace std;
 
 GLMatrices Matrices;
@@ -20,13 +21,14 @@ GLFWwindow *window;
 **************************/
 
 #define NUM_COINS 250
-#define NUM_FIRES 8 // 4 fire beams and 4 fire lines
+#define NUM_FIRES 16 // 4 fire beams and 4 fire lines
 Ball player;
 Fire fire[NUM_FIRES];
 Triangle tr;
 Boomerang bmr;
 Powerup p_up;
 Ground ground;
+Magnet magnet;
 Coin coins[NUM_COINS];
 
 float floorHeight = -0.7;
@@ -73,10 +75,10 @@ void draw() {
     ground.draw(VP);
     player.draw(VP);
     tr.draw(VP);
+    magnet.draw(VP);
 
     for(i=0, j=0; j<NUM_FIRES; i++,j++)
         fire[j].draw(VP);
-
 
 
     if(bmr.collided == false && bmr.finish == false && player.position.x > 8)
@@ -181,29 +183,36 @@ void pan_down()
 
 void tick_elements()
 {
-
+    magnet.tick();
     player.tick();
     {
         tr.position.x = player.position.x;
         tr.position.y = player.position.y - 0.7;
     }
-    //tr.tick();
+    p_up.tick();//tr.tick();
     for(i=0; i<NUM_FIRES; i++)
         fire[i].tick();
-    if(player.position.x > 8 && bmr.finish == false){
-        bmr.tick();
-    }
-
-    p_up.tick();
-    if(detect_collision_boomerang())
+    if(player.position.x > bmr.radius_of_path - 5 && bmr.finish == false)
     {
-        score-=10;
-        bmr.collided = true;
-        bmr.finish = true;
-    }
+        cout << "x : " << abs(player.position.x - bmr.position.x) << endl;
+        cout << "y : " << player.position.y - bmr.position.y << endl;
+        cout << bmr.collided << endl << endl;
+
+        bmr.tick();
+
+        if(abs(player.position.x - bmr.position.x) < 1.5*player.radius && (abs(player.position.y - bmr.position.y) < 1.5*player.radius))
+                bmr.collided = true;
+
+        if (abs(player.position.x - bmr.position.x) < 1.5*player.radius && (player.position.y == 0.7 && bmr.position.y < 0))
+                bmr.collided = true;
+        if(bmr.collided == true && bmr.finish == false)
+        {
+            score -= 100;
+            bmr.finish = true;
+        }
         // cout << player.position.x << " " << p_up.position.x << endl;
         // cout << player.position.y << " " << p_up.position.y << endl;
-
+    }
     if((player.position.y > 0.7))
     {
         for(i=0; i<NUM_COINS; i++)
@@ -217,6 +226,7 @@ void tick_elements()
         }
 
     }
+
     if(p_up.active && detect_collision_bonus())
     {
         score += 100;
@@ -256,6 +266,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     bmr         = Boomerang(COLOR_BLACK);
     ground      = Ground(floorHeight + 3*player.radius, -4.0);
     p_up        = Powerup(COLOR_DARKBLUE);
+    magnet      = Magnet(1);
     // generate 4 random fire lines
     for(j=0; j<NUM_FIRES; j++)
     {
@@ -320,7 +331,8 @@ int main(int argc, char **argv)
     window = initGLFW(width, height);
 
     initGL (window, width, height);
-
+    int tick_count = 2*magnet.dashIn + magnet.stay;
+    int gap = 500; // Time between departure of old magnet and arrival of new
     glfwSetScrollCallback(window, scroll_callback);
 
     /* Draw in loop */
@@ -330,6 +342,13 @@ int main(int argc, char **argv)
         if (t60.processTick()) {
 
             tick_count++;
+
+
+            if(tick_count == gap + 1.5*magnet.dashIn + magnet.stay)
+           {
+               tick_count=0;
+               magnet.start(rand()%2 + 1);
+           }
 
 
 
@@ -370,16 +389,6 @@ bool detect_collision(int i)
     return false;
 }
 
-bool detect_collision_boomerang()
-{
-
-    //if(player.speedVertical > 0) return false;
-    if(abso(player.position.x - bmr.position.x) < (player.radius + bmr.size)
-        && player.position.y > bmr.position.y
-        && player.position.y - bmr.position.y <= (player.radius + bmr.size)
-        ) return true;
-    return false;
-}
 
 bool detect_collision_bonus()
 {
@@ -388,7 +397,7 @@ bool detect_collision_bonus()
     //cout << player.position.x << " " << p_up.position.x << endl;
     //cout << player.position.y << " " << p_up.position.y << endl;
 
-    if(abso(player.position.x - p_up.position.x) <= 1 && abso(player.position.y - p_up.position.y) < 0.25)
+    if(abso(player.position.x - p_up.position.x) <= player.radius + p_up.size && abso(player.position.y - p_up.position.y) <= player.radius + p_up.size)
         return true;
     return false;
 }

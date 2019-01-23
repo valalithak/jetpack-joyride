@@ -8,11 +8,11 @@ using namespace std;
 Boomerang::Boomerang(color_t color) {
     this->collided = false;
     this->finish = false;
-    this->radius_of_path = 20;
+    this->radius_of_path = 35;
     this->position = glm::vec3(this->radius_of_path, 1, 0); // mod of x coordinate here will be the radius of trajectory
     this->size = 0.2;
     this->onground = true;
-    speed = 0.2; // Speed of left-right key press in air
+    speed = 0.15; // Speed of left-right key press in air
     acc_g = 0.1; // Gravity acceleration
 
     count = 0;
@@ -67,6 +67,7 @@ void Boomerang::draw(glm::mat4 VP) {
 
 void Boomerang::tick() {
 
+
     if(flag==0)
     {
         this->position.x -= this->speed/2;
@@ -80,6 +81,7 @@ void Boomerang::tick() {
     {
         this->position.x -= this->speed/4;
         this->position.y -= this->speed/4;
+
         count++;
         if(count==20){
             flag = 6;
@@ -88,9 +90,9 @@ void Boomerang::tick() {
     }
     if(flag==6)
     {
-        this->position.y -= this->speed/5;
+        this->position.y -= this->speed/4;
         count++;
-        if(count==5)
+        if(count==10)
         {
             flag = 2;
             count = 0;
