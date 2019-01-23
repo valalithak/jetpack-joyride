@@ -19,8 +19,8 @@ GLFWwindow *window;
 * Customizable functions *
 **************************/
 
-#define NUM_COINS 500
-#define NUM_FIRES 5;
+#define NUM_COINS 250
+#define NUM_FIRES 5
 Ball player;
 Fire fire;
 Triangle tr;
@@ -28,7 +28,7 @@ Boomerang bmr;
 Powerup p_up;
 Ground ground;
 Coin coins[NUM_COINS];
-Ball fire_cylinder[2*NUM_FIRES];
+Ball fire_cylinder[4*NUM_FIRES];
 float floorHeight = -0.7;
 int i, j;
 int score = 0;
@@ -76,6 +76,8 @@ void draw() {
     fire.draw(VP);
     fire_cylinder[0].draw(VP);
     fire_cylinder[1].draw(VP);
+    fire_cylinder[2].draw(VP);
+    fire_cylinder[3].draw(VP);
 
     if(bmr.collided == false)
         bmr.draw(VP);
@@ -248,7 +250,9 @@ void initGL(GLFWwindow *window, int width, int height) {
     int yfire_2 = 2;
     fire        = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
     fire_cylinder[0] = Ball(xfire_1+1, yfire_1+1, 0.1, COLOR_FIRE);
-    fire_cylinder[1] = Ball(xfire_2+1, yfire_2+1, 0.1, COLOR_FIRE);
+    fire_cylinder[1] = Ball(xfire_1+1, yfire_1+1, 0.05, COLOR_YELLOW);
+    fire_cylinder[2] = Ball(xfire_2+1, yfire_2+1, 0.1, COLOR_FIRE);
+    fire_cylinder[3] = Ball(xfire_2+1, yfire_2+1, 0.05, COLOR_YELLOW);
 
 
     //cout << player.position.y << endl;

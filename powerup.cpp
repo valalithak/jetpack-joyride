@@ -6,7 +6,7 @@ using namespace std;
 // DIAMOND SHAPED POWERUP WHICH SHOULD APPEAR RANDOMLY AND GIVE BONUS TO PLAYER
 Powerup::Powerup(color_t color) {
     this->active = true;
-    int x_coord = rand()%3 + 1;
+    int x_coord = rand()%7 + 1;
     int y_coord =  1;
     this->position = glm::vec3(x_coord, y_coord, 0);
     this->size = 0.2;
@@ -58,7 +58,7 @@ void Powerup::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
 }
 int c = 0;
-bool fl = 0;
+int fl = 0;
 void Powerup::tick()
 {
 
@@ -68,20 +68,36 @@ void Powerup::tick()
     {
 
         this->position.x += this->speed;
+        this->position.y += this->speed/4;
         c++;
-    }
-    if(c==100)
-    {
-        if(fl==1)
-            fl = 0;
-        else
+        if(c%100 == 0)
             fl = 1;
-        c = 0;
     }
     if(fl == 1)
     {
-        this->position.x -= this->speed;
+        this->position.x += this->speed;
+        this->position.y -= this->speed/4;
+
         c++;
+        if(c%100 == 0)
+            fl = 2;
+    }
+
+    if(fl==2)
+    {
+        this->position.x -= this->speed;
+        this->position.y += this->speed/4;
+        c++;
+        if(c%100 == 0)
+            fl = 3;
+    }
+    if(fl==3)
+    {
+        this->position.x -= this->speed;
+        this->position.y -= this->speed/4;
+        c++;
+        if(c%100 == 0)
+            fl = 0;
     }
 
 }

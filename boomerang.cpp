@@ -7,7 +7,7 @@ using namespace std;
 
 Boomerang::Boomerang(color_t color) {
     this->collided = false;
-    this->radius_of_path = 2;
+    this->radius_of_path = 3;
     this->position = glm::vec3(-this->radius_of_path, 0, 0); // mod of x coordinate here will be the radius of trajectory
     this->size = 0.2;
     this->onground = true;
@@ -75,28 +75,26 @@ void Boomerang::tick() {
         //cout << degree << " " <<  flag << " " << "loop1" <<  endl;
     }
 
-    if(degree%180 == 0 && this->position.y > (floorHeight)/screen_zoom)
+    if(degree%180 == 0)// && this->position.y > (floorHeight)/screen_zoom)
     {
         if(flag==0)
             flag = 1;
-        else if(flag==2)
-            flag =0;
-        this->position.y -= acc_g;
+        else
+            flag =3;
 
-        //cout << degree << " " <<  flag << " " << "loop2" <<  endl;
     }
-    if(flag > 0 && this->position.y <= floorHeight/screen_zoom){
-
-        degree = 0;
-
-        if(flag == 1)
+    if(flag == 3 ||  flag == 1)
+    {
+        if(flag == 1){
             flag = 2;
-        else if(flag == 2)
+            degree = 0;
+        }
+        else
         {
             flag = 0;
             degree = 180;
         }
-        //cout << degree << " " <<  flag << " " << "loop3" <<  endl;
+
     }
     if(flag == 2 && degree <= 180)
     {
