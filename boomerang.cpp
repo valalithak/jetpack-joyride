@@ -7,8 +7,9 @@ using namespace std;
 
 Boomerang::Boomerang(color_t color) {
     this->collided = false;
-    this->radius_of_path = 3;
-    this->position = glm::vec3(-this->radius_of_path, 0, 0); // mod of x coordinate here will be the radius of trajectory
+    this->finish = true;
+    this->radius_of_path = 20;
+    this->position = glm::vec3(this->radius_of_path, 1, 0); // mod of x coordinate here will be the radius of trajectory
     this->size = 0.2;
     this->onground = true;
     speed = 0.2; // Speed of left-right key press in air
@@ -17,33 +18,33 @@ Boomerang::Boomerang(color_t color) {
     count = 0;
     flag = 0;
     angle_rad = 3.14159/180;
-    degree = 180;
+    degree = 360;
     GLfloat vertex_buffer_data[18];
 
 
 
-            vertex_buffer_data[0]   = -1-0.5f;
+            vertex_buffer_data[0]   = -1;
             vertex_buffer_data[1] = 1;
             vertex_buffer_data[2] = 0.0f;
 
-            vertex_buffer_data[3] = -0.4f;
-            vertex_buffer_data[4] = 1.5f;
+            vertex_buffer_data[3] = -0.4f+0.1f;
+            vertex_buffer_data[4] = 1.3f;
             vertex_buffer_data[5] = 0.0f;
 
-            vertex_buffer_data[6] = -0.4f;
-            vertex_buffer_data[7] = 1.8f;
+            vertex_buffer_data[6] = -0.4f+0.1f;
+            vertex_buffer_data[7] = 1.5f;
             vertex_buffer_data[8] = 0.0f; // left triangle
 
-            vertex_buffer_data[9] = 0.2f+0.5f;
+            vertex_buffer_data[9] = 0.2f+0.2f;
             vertex_buffer_data[10] = 1;
             vertex_buffer_data[11] = 0.0f;
 
-            vertex_buffer_data[12] = -0.4f;
-            vertex_buffer_data[13] = 1.5f;
+            vertex_buffer_data[12] = -0.4f+0.1f;
+            vertex_buffer_data[13] = 1.3f;
             vertex_buffer_data[14] = 0.0f;
 
-            vertex_buffer_data[15] = -0.4f;
-            vertex_buffer_data[16] = 1.8f;
+            vertex_buffer_data[15] = -0.4f+0.1f;
+            vertex_buffer_data[16] = 1.5f;
             vertex_buffer_data[17] = 0.0f;  // right triangle
 
 
@@ -66,42 +67,59 @@ void Boomerang::draw(glm::mat4 VP) {
 
 void Boomerang::tick() {
 
-    if(degree!=0 && flag == 0)
+    if(flag==0)
     {
-        this->position.x = this->radius_of_path*cos(angle_rad*degree)/screen_zoom;
-        this->position.y = this->radius_of_path*sin(angle_rad*degree)/screen_zoom;
-        degree--;
-        //cout << 2*cos(angle_rad*degree) << " " << 2*sin(angle_rad*degree) << endl;
-        //cout << degree << " " <<  flag << " " << "loop1" <<  endl;
-    }
-
-    if(degree%180 == 0)// && this->position.y > (floorHeight)/screen_zoom)
-    {
-        if(flag==0)
+        this->position.x -= this->speed/2;
+        count++;
+        if(count==100){
             flag = 1;
-        else
-            flag =3;
-
-    }
-    if(flag == 3 ||  flag == 1)
-    {
-        if(flag == 1){
-            flag = 2;
-            degree = 0;
+            count = 0;
         }
-        else
+    }
+    if(flag==1)
+    {
+        this->position.x -= this->speed/4;
+        this->position.y -= this->speed/4;
+        count++;
+        if(count==20){
+            flag = 6;
+            count = 0;
+        }
+    }
+    if(flag==6)
+    {
+        this->position.y -= this->speed/5;
+        count++;
+        if(count==5)
         {
-            flag = 0;
-            degree = 180;
+            flag = 2;
+            count = 0;
+        }
+    }
+    if(flag==2)
+    {
+        this->position.x += this->speed/4;
+        this->position.y -= this->speed/4;
+        count++;
+        if(count==20){
+            flag = 3;
+            count = 0;
+        }
+    }
+    if(flag==3)
+    {
+        this->position.x += this->speed/2;
+        count++;
+        if(count==100){
+            flag = 4;
+            count = 0;
+            this->finish = true;
         }
 
     }
-    if(flag == 2 && degree <= 180)
-    {
-        this->position.x = 2*cos(angle_rad*degree);
-        this->position.y = 2*sin(angle_rad*degree);
-        degree++;
-        //cout << degree << " " <<  flag << " " << "loop4" <<  endl;
-    }
+
+
+
+
 
 }

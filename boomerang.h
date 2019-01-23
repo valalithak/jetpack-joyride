@@ -28,6 +28,7 @@ public:
     bool onground;
     float speedHoriz;
     bool collided;
+    bool finish;
 
 
 private:

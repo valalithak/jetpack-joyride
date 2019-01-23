@@ -62,7 +62,7 @@ int fl = 0;
 void Powerup::tick()
 {
 
-    cout << "flag: " << fl << " " << "count: " << c << endl;
+//    cout << "flag: " << fl << " " << "count: " << c << endl;
 
     if(fl == 0)
     {

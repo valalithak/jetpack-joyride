@@ -79,13 +79,15 @@ void draw() {
     fire_cylinder[2].draw(VP);
     fire_cylinder[3].draw(VP);
 
-    if(bmr.collided == false)
+    if(bmr.collided == false && bmr.finish == false && player.position.x > 5)
         bmr.draw(VP);
     if(p_up.active)
         p_up.draw(VP);
 
     for(i=0; i<NUM_COINS; i++)
     {
+        if(coins[i].position.y > 5/ screen_zoom)
+            coins[i].position.y = (rand()%2 +2)/screen_zoom;
         if(coins[i].alive) {coins[i].draw(VP);}
     }
 
@@ -182,7 +184,10 @@ void tick_elements()
 
     player.tick();
     tr.tick();
-    bmr.tick();
+    if(player.position.x > 8){
+        bmr.finish = false;
+        bmr.tick();
+    }
     p_up.tick();
     if(detect_collision_boomerang())
     {
@@ -359,10 +364,8 @@ bool detect_collision_bonus()
 {
 
     //if(player.speedVertical > 0) return false;
-    cout << player.position.x << " " << p_up.position.x << endl;
-    cout << player.position.y << " " << p_up.position.y << endl;
-
-
+    //cout << player.position.x << " " << p_up.position.x << endl;
+    //cout << player.position.y << " " << p_up.position.y << endl;
 
     if(abso(player.position.x - p_up.position.x) <= 1 && abso(player.position.y - p_up.position.y) < 0.25)
         return true;
