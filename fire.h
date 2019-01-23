@@ -15,9 +15,14 @@ public:
     void tick();
     double speed;
     double acc_g;
-    bool active;
+    bool touched;
     bool beam;
     float radius;
+    float x1;
+    float x2;
+    float y1;
+    float y2;
+
 
 
 private:

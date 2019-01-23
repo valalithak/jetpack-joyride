@@ -77,8 +77,10 @@ void draw() {
     tr.draw(VP);
     magnet.draw(VP);
 
-    for(i=0, j=0; j<NUM_FIRES; i++,j++)
+    for(j=0; j<NUM_FIRES;j++){
+        if(fire[j].touched == false)
         fire[j].draw(VP);
+    }
 
 
     if(bmr.collided == false && bmr.finish == false && player.position.x > 8)
@@ -217,7 +219,7 @@ void tick_elements()
     {
         for(i=0; i<NUM_COINS; i++)
         {
-            if(coins[i].alive && detect_collision(i))
+            if(coins[i].alive && detect_collision(i, 0))
             {
                     score+= coins[i].score;
                     coins[i].alive = false;
@@ -226,11 +228,20 @@ void tick_elements()
         }
 
     }
+    for(i=0; i<NUM_FIRES; i++)
+    {
+        if(detect_collision(i,1) && fire[i].touched == false )
+        {
+            fire[i].touched = true;
+            score -= 10;
+        }
+    }
+
 
     if(p_up.active && detect_collision_bonus())
     {
         score += 100;
-        cout << "collided" << endl;
+        //cout << "collided" << endl;
         p_up.active = false;
     }
 
@@ -378,15 +389,28 @@ float abso(float x)
     return x;
 }
 
-bool detect_collision(int i)
+bool detect_collision(int i, int type)
 {
-    Coin coin = coins[i];
-    //if(player.speedVertical > 0) return false;
-    if(abso(player.position.x - coin.position.x) < (player.radius + coin.radius)
-        && player.position.y > coin.position.y
-        && player.position.y - coin.position.y <= (player.radius + coin.radius)
-        ) return true;
-    return false;
+    // for coin collision, type= 0
+    if(type == 0)
+    {
+        Coin coin = coins[i];
+        //if(player.speedVertical > 0) return false;
+        if(abso(player.position.x - coin.position.x) < (player.radius + coin.radius)
+            && player.position.y > coin.position.y
+            && player.position.y - coin.position.y <= (player.radius + coin.radius)
+            ) return true;
+        return false;
+    }
+    if(type == 1)
+    {
+        Fire f= fire[i];
+        //if(player.speedVertical > 0) return false;
+        if(player.position.x >= f.x1 && player.position.x <= f.x2 && player.position.y >= f.y1 && player.position.y <= f.y2+0.15)
+            return true;
+        return false;
+    }
+
 }
 
 
@@ -401,6 +425,7 @@ bool detect_collision_bonus()
         return true;
     return false;
 }
+
 
 void reset_screen()
 {

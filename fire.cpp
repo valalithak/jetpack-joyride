@@ -7,9 +7,14 @@ using namespace std;
 Fire::Fire(color_t color, float x1, float y1, float x2, float y2)
 {
     this->beam = false;
+    this->x1 = x1;
+    this->x2 = x2;
+    this->y1 = y1;
+    this->y2 = y2;
     this->position = glm::vec3(x1, y1, 0);
     this->size = 0.2;
     this->radius = 0.2;
+    this->touched = false;
     speed = 0.12;
 
 
