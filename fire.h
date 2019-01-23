@@ -16,10 +16,13 @@ public:
     double speed;
     double acc_g;
     bool active;
+    bool beam;
+    float radius;
 
 
 private:
-    VAO *object;
+    VAO *object1;
+    VAO *object2;
 };
 
 #endif

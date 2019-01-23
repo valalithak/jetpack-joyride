@@ -49,21 +49,3 @@ void Triangle::draw(glm::mat4 VP) {
 void Triangle::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
 }
-
-void Triangle::tick() {
-    //this->ground = false;
-    if(this->onground == false)
-    {
-        this->position.y -= acc_g;
-        //cout << 1 << endl;
-    }
-    if(this->position.y >= (floorHeight + 19*this->size)/screen_zoom){
-        this->position.y = (floorHeight + 19*this->size)/screen_zoom;
-        //cout << 2 << endl;
-    }
-    if(this->position.y <= 0){
-        this->onground = true;
-
-    }
-
-}

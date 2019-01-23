@@ -9,9 +9,9 @@ Ball::Ball(float x, float y, float rad, color_t color) {
     this->radius = rad; // 0.2 for player
     this->onground = true;
     speed = 0.2; // Speed of left-right key press in air
-    goDown = false;
+
     acc_g = 0.1; // Gravity acceleration
-    initVelocity = 0.16;
+
 
     this->speedHoriz = 0.0;
 
@@ -69,6 +69,7 @@ void Ball::set_position(float x, float y) {
 
 void Ball::tick() {
     //this->ground = false;
+    cout << "ball y : " << this->position.y << endl;
     if(this->onground == false)
     {
         this->position.y -= acc_g;

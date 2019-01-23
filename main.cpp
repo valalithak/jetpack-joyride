@@ -20,15 +20,15 @@ GLFWwindow *window;
 **************************/
 
 #define NUM_COINS 250
-#define NUM_FIRES 5
+#define NUM_FIRES 8 // 4 fire beams and 4 fire lines
 Ball player;
-Fire fire;
+Fire fire[NUM_FIRES];
 Triangle tr;
 Boomerang bmr;
 Powerup p_up;
 Ground ground;
 Coin coins[NUM_COINS];
-Ball fire_cylinder[4*NUM_FIRES];
+
 float floorHeight = -0.7;
 int i, j;
 int score = 0;
@@ -73,13 +73,13 @@ void draw() {
     ground.draw(VP);
     player.draw(VP);
     tr.draw(VP);
-    fire.draw(VP);
-    fire_cylinder[0].draw(VP);
-    fire_cylinder[1].draw(VP);
-    fire_cylinder[2].draw(VP);
-    fire_cylinder[3].draw(VP);
 
-    if(bmr.collided == false && bmr.finish == false && player.position.x > 5)
+    for(i=0, j=0; j<NUM_FIRES; i++,j++)
+        fire[j].draw(VP);
+
+
+
+    if(bmr.collided == false && bmr.finish == false && player.position.x > 8)
         bmr.draw(VP);
     if(p_up.active)
         p_up.draw(VP);
@@ -183,16 +183,23 @@ void tick_elements()
 {
 
     player.tick();
-    tr.tick();
-    if(player.position.x > 8){
-        bmr.finish = false;
+    {
+        tr.position.x = player.position.x;
+        tr.position.y = player.position.y - 0.7;
+    }
+    //tr.tick();
+    for(i=0; i<NUM_FIRES; i++)
+        fire[i].tick();
+    if(player.position.x > 8 && bmr.finish == false){
         bmr.tick();
     }
+
     p_up.tick();
     if(detect_collision_boomerang())
     {
         score-=10;
         bmr.collided = true;
+        bmr.finish = true;
     }
         // cout << player.position.x << " " << p_up.position.x << endl;
         // cout << player.position.y << " " << p_up.position.y << endl;
@@ -229,10 +236,10 @@ void tick_elements()
     float right = screen_center_x + 4/screen_zoom;
     if(player.position.x + player.radius > right)
     {
-        if(player.position.x + player.radius > 40.0)
-            player.position.x = 40.0 - player.radius;
+        if(player.position.x + player.radius > 800.0)
+            player.position.x = 800.0 - player.radius;
 
-        screen_center_x = (player.position.x + player.radius) - 4/screen_zoom;
+        screen_center_x = 2*(player.position.x + player.radius) - 4/screen_zoom;
     }
 
     reset_screen();
@@ -246,19 +253,33 @@ void initGL(GLFWwindow *window, int width, int height) {
 
     player      = Ball(0, 0.7,0.2, COLOR_GREY);
     tr          = Triangle(COLOR_YELLOW);
-    bmr         = Boomerang(COLOR_DARKRED);
+    bmr         = Boomerang(COLOR_BLACK);
     ground      = Ground(floorHeight + 3*player.radius, -4.0);
-    p_up        = Powerup(COLOR_SEAGREEN);
-    int xfire_1 = 1;
-    int yfire_1 = 1;
-    int xfire_2 = 3;
-    int yfire_2 = 2;
-    fire        = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
-    fire_cylinder[0] = Ball(xfire_1+1, yfire_1+1, 0.1, COLOR_FIRE);
-    fire_cylinder[1] = Ball(xfire_1+1, yfire_1+1, 0.05, COLOR_YELLOW);
-    fire_cylinder[2] = Ball(xfire_2+1, yfire_2+1, 0.1, COLOR_FIRE);
-    fire_cylinder[3] = Ball(xfire_2+1, yfire_2+1, 0.05, COLOR_YELLOW);
+    p_up        = Powerup(COLOR_DARKBLUE);
+    // generate 4 random fire lines
+    for(j=0; j<NUM_FIRES; j++)
+    {
 
+        if(j%2==0 || j%7 == 0) // it is a fire beam
+        {
+            float yfire_1      = 1.5;
+            float xfire_1      = 4*j + rand()%5 + 5;
+            float xfire_2      = xfire_1 + 2.5;
+            float yfire_2      = yfire_1;
+            fire[j]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
+            fire[j].beam = true;
+        }
+        else // it is a fire line
+        {
+            float yfire_1      = 1.7 + rand()%2 + 0.1;
+            float xfire_1      = 4*j + rand()%5 + 5;
+            float xfire_2      = xfire_1 + 2.5;
+            float yfire_2      = yfire_1 + rand()%3 - 0.4;
+            fire[j]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
+        }
+
+
+    }
 
     //cout << player.position.y << endl;
 
@@ -379,5 +400,5 @@ void reset_screen()
     float left   = screen_center_x - 4 / screen_zoom;
     float right  = screen_center_x + 4 / screen_zoom;
 
-    Matrices.projection = glm::ortho(left, right, bottom, top, 0.1f, 500.0f);
+    Matrices.projection = glm::ortho(left, right, bottom, top, 0.1f, 2000.0f);
 }
