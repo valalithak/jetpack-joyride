@@ -10,6 +10,7 @@
 #include "magnet.h"
 #include "score.h"
 #include "coin.h"
+#include "balloon.h"
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -33,6 +34,7 @@ Ground ground;
 Magnet magnet;
 Coin coins[NUM_COINS];
 Score sc[3];
+Balloon balloon;
 
 float floorHeight = -0.7;
 int i, j;
@@ -78,6 +80,8 @@ void draw() {
     ground.draw(VP);
     player.draw(VP);
     tr.draw(VP);
+    if(balloon.appear)
+        balloon.draw(VP);
     magnet.draw(VP);
     sc[0].draw(VP);
     sc[1].draw(VP);
@@ -109,6 +113,7 @@ void draw() {
 void tick_input(GLFWwindow *window) {
     int A  = glfwGetKey(window, GLFW_KEY_A);
     int D = glfwGetKey(window, GLFW_KEY_D);
+    int B = glfwGetKey(window, GLFW_KEY_B);
     int space = glfwGetKey(window, GLFW_KEY_SPACE);
     if (A) {
         player.position.x -= 0.3*player.speed;
@@ -118,6 +123,11 @@ void tick_input(GLFWwindow *window) {
     if (D) {
         player.position.x += 0.3*player.speed;
         tr.position.x += 0.3*player.speed;
+    }
+    if (B) {
+        balloon.position.x = player.position.x;
+        balloon.position.y = player.position.y;
+        balloon.appear = true;
     }
     if (space) {
         player.onground = false;
@@ -215,6 +225,10 @@ void tick_elements()
         }
 
     }
+
+
+    balloon.tick();
+    cout << "balloon : " << balloon.position.y << " " << balloon.appear << endl;
     player.tick();
     {
         tr.position.x = player.position.x;
@@ -226,10 +240,6 @@ void tick_elements()
         fire[i].tick();
     if(player.position.x > bmr.radius_of_path - 5 && bmr.finish == false)
     {
-        cout << "x : " << abs(player.position.x - bmr.position.x) << endl;
-        cout << "y : " << player.position.y - bmr.position.y << endl;
-        cout << bmr.collided << endl << endl;
-
         bmr.tick();
 
         if(abs(player.position.x - bmr.position.x) < 1.5*player.radius && (abs(player.position.y - bmr.position.y) < 1.5*player.radius))
@@ -244,12 +254,13 @@ void tick_elements()
                 score = 999;
             scu = score%10;
             sct = (score/10)%100;
-            sch = score%100;
+            sch = (score/100)%100;
             bmr.finish = true;
         }
         // cout << player.position.x << " " << p_up.position.x << endl;
         // cout << player.position.y << " " << p_up.position.y << endl;
     }
+
     if((player.position.y > 0.7))
     {
         for(i=0; i<NUM_COINS; i++)
@@ -268,6 +279,7 @@ void tick_elements()
         }
 
     }
+
     for(i=0; i<NUM_FIRES; i++)
     {
         if(detect_collision(i,1) && fire[i].touched == false )
@@ -315,6 +327,10 @@ void tick_elements()
     }
 
     reset_screen();
+    sc[0].val = scu;
+    sc[1].val = sct;
+    sc[2].val = sch;
+
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -333,6 +349,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     sc[0]       = Score(screen_center_x, -2, scu, COLOR_WHITE);
     sc[1]       = Score(screen_center_x - 1, -2, sct, COLOR_WHITE);
     sc[2]       = Score(screen_center_x - 2, -2, sch, COLOR_WHITE);
+    balloon     = Balloon(0, 0);
     // generate 4 random fire lines
     for(j=0; j<NUM_FIRES; j++)
     {

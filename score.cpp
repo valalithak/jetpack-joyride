@@ -19,7 +19,7 @@ Score::Score(float x_coord, float y_coord, int val, color_t color)
             0.0f, y, 0.0f,
             x, 0.0f, 0.0f,
             x, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
+            0.0f, y, 0.0f,
             x, y, 0.0f,
 
         },
@@ -27,10 +27,11 @@ Score::Score(float x_coord, float y_coord, int val, color_t color)
         {
             0.0f, y, 0.0f,
             0.0f, y+x, 0.0f,
-            d, y, 0.0f,
-            d, y, 0.0f,
-            d, y+x, 0.0f,
-            0, y, 0.0f,
+            d+x, y, 0.0f,
+            d+x, y, 0.0f,
+            d+x, y+x, 0.0f,
+            0.0f, y+x, 0.0f,
+
 
         },
         //vertex_buffer_data[2] =
@@ -39,9 +40,8 @@ Score::Score(float x_coord, float y_coord, int val, color_t color)
             d, y, 0.0f,
             x+d, 0.0f, 0.0f,
             x+d, 0.0f, 0.0f,
-            d+x, y, 0.0f,
             d, y, 0.0f,
-
+            x+d, y, 0.0f,
         },
         //vertex_buffer_data[3] =
         {
@@ -49,18 +49,19 @@ Score::Score(float x_coord, float y_coord, int val, color_t color)
             d, -y, 0.0f,
             x+d, 0.0f, 0.0f,
             x+d, 0.0f, 0.0f,
-            x+d, -y, 0.0f,
             d, -y, 0.0f,
+            x+d, -y, 0.0f,
 
         },
         //vertex_buffer_data[4] =
         {
             0.0f, -y, 0.0f,
-            0.0f, -y-x, 0.0f,
-            d, -y, 0.0f,
-            d, -y, 0.0f,
-            d, -y-x, 0.0f,
-            0, -y, 0.0f,
+            0.0f, -(y+x), 0.0f,
+            d+x, -y, 0.0f,
+            d+x, -y, 0.0f,
+            d+x, -(y+x), 0.0f,
+            0.0f, -(y+x), 0.0f,
+
         },
         //vertex_buffer_data[5] =
         {
@@ -68,19 +69,19 @@ Score::Score(float x_coord, float y_coord, int val, color_t color)
             0.0f, -y, 0.0f,
             x, 0.0f, 0.0f,
             x, 0.0f, 0.0f,
-            x, -y, 0.0f,
             0.0f, -y, 0.0f,
+            x, -y, 0.0f,
+
 
         },
         //vertex_buffer_data[6] =
         {
             0.0f, 0.0f, 0.0f,
-            d, 0.0f, 0.0f,
-            0.0f, x, 0.0f,
-            d, x, 0.0f,
-            0.0f, x, 0.0f,
-            d, 0.0f, 0.0f
-
+            0.0f, -x, 0.0f,
+            d+x, 0.0f, 0.0f,
+            d+x, 0.0f, 0.0f,
+            d+x, -x, 0.0f,
+            0.0f, -(x), 0.0f,
         }
     };
         this->object0 = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data[0], color, GL_FILL);
