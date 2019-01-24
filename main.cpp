@@ -5,7 +5,7 @@
 #include "triangle.h"
 #include "boomerang.h"
 #include "powerup.h"
-#include "powerup.h"
+#include "poweruptwo.h"
 #include "fire.h"
 #include "magnet.h"
 #include "score.h"
@@ -28,6 +28,7 @@ Fire fire[NUM_FIRES];
 Triangle tr;
 Boomerang bmr;
 Powerup p_up;
+Poweruptwo p_up2;
 Ground ground;
 Magnet magnet;
 Coin coins[NUM_COINS];
@@ -93,6 +94,8 @@ void draw() {
         bmr.draw(VP);
     if(p_up.active)
         p_up.draw(VP);
+    if(p_up2.active)
+        p_up2.draw(VP);
 
     for(i=0; i<NUM_COINS; i++)
     {
@@ -218,6 +221,7 @@ void tick_elements()
         tr.position.y = player.position.y - 0.7;
     }
     p_up.tick();//tr.tick();
+    p_up2.tick();
     for(i=0; i<NUM_FIRES; i++)
         fire[i].tick();
     if(player.position.x > bmr.radius_of_path - 5 && bmr.finish == false)
@@ -291,6 +295,7 @@ void tick_elements()
         p_up.active = false;
     }
 
+
     float left = screen_center_x - 4/screen_zoom;
     if(player.position.x - player.radius < left)
     {
@@ -323,6 +328,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     bmr         = Boomerang(COLOR_BLACK);
     ground      = Ground(floorHeight + 3*player.radius, -4.0);
     p_up        = Powerup(COLOR_DARKBLUE);
+    p_up2       = Poweruptwo(COLOR_LIGHTGREY);
     magnet      = Magnet(1);
     sc[0]       = Score(screen_center_x, -2, scu, COLOR_WHITE);
     sc[1]       = Score(screen_center_x - 1, -2, sct, COLOR_WHITE);

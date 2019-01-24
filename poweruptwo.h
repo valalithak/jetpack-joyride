@@ -1,13 +1,13 @@
 #include "main.h"
 
-#ifndef POWERUP_H
-#define POWERUP_H
+#ifndef POWERUPTWO_H
+#define POWERUPTWO_H
 
 
-class Powerup {
+class Poweruptwo {
 public:
-    Powerup() {}
-    Powerup(color_t color);
+    Poweruptwo() {}
+    Poweruptwo(color_t color);
     glm::vec3 position;
     float size;
     void draw(glm::mat4 VP);
@@ -17,7 +17,7 @@ public:
     double acc_g;
     bool active;
     //int count;
-    bool fl;
+    //bool fl;
 
 private:
     VAO *object;
