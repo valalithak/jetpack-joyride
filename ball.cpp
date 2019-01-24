@@ -8,10 +8,11 @@ Ball::Ball(float x, float y, float rad, color_t color) {
     this->position = glm::vec3(x, y, 0);
     this->radius = rad; // 0.2 for player
     this->onground = true;
+
     speed = 0.2; // Speed of left-right key press in air
 
     acc_g = 0.1; // Gravity acceleration
-
+    
 
     this->speedHoriz = 0.0;
 
@@ -84,5 +85,7 @@ void Ball::tick() {
         this->position.y = 0.6;
         //cout << 3 << endl;
     }
+
+
 
 }

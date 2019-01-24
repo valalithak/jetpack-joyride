@@ -11,7 +11,7 @@ Powerup::Powerup(color_t color) {
     this->position = glm::vec3(x_coord, y_coord, 0);
     this->size = 0.2;
     // this->onground = true;
-    speed = 0.12; // Speed of left-right key press in air
+    speed = 0.08; // Speed of left-right key press in air
 
 
     GLfloat vertex_buffer_data[18];

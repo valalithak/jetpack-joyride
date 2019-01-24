@@ -2,14 +2,15 @@
 #include "timer.h"
 #include "ball.h"
 #include "ground.h"
-#include "coin.h"
-#include<bits/stdc++.h>
 #include "triangle.h"
 #include "boomerang.h"
 #include "powerup.h"
 #include "powerup.h"
 #include "fire.h"
 #include "magnet.h"
+#include "score.h"
+#include "coin.h"
+#include<bits/stdc++.h>
 using namespace std;
 
 GLMatrices Matrices;
@@ -30,12 +31,13 @@ Powerup p_up;
 Ground ground;
 Magnet magnet;
 Coin coins[NUM_COINS];
+Score sc[3];
 
 float floorHeight = -0.7;
 int i, j;
 int score = 0;
 int tick_count = 0;
-
+int scu, sct, sch;
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 
 Timer t60(1.0 / 60);
@@ -76,6 +78,10 @@ void draw() {
     player.draw(VP);
     tr.draw(VP);
     magnet.draw(VP);
+    sc[0].draw(VP);
+    sc[1].draw(VP);
+    sc[2].draw(VP);
+
 
     for(j=0; j<NUM_FIRES;j++){
         if(fire[j].touched == false)
@@ -186,6 +192,26 @@ void pan_down()
 void tick_elements()
 {
     magnet.tick();
+    if(magnet.field == true)
+    {
+        if(player.position.y > 2)
+        {
+            player.position.y -= 0.02;
+        }
+        if(player.position.y < 2)
+        {
+            player.position.y += 0.02;
+        }
+        if(player.position.x < magnet.position.x)
+        {
+            player.position.x += 0.02;
+        }
+        if(player.position.x > magnet.position.x)
+        {
+            player.position.x -= 0.02;
+        }
+
+    }
     player.tick();
     {
         tr.position.x = player.position.x;
@@ -210,6 +236,11 @@ void tick_elements()
         if(bmr.collided == true && bmr.finish == false)
         {
             score -= 100;
+            if(score>999)
+                score = 999;
+            scu = score%10;
+            sct = (score/10)%100;
+            sch = score%100;
             bmr.finish = true;
         }
         // cout << player.position.x << " " << p_up.position.x << endl;
@@ -222,6 +253,11 @@ void tick_elements()
             if(coins[i].alive && detect_collision(i, 0))
             {
                     score+= coins[i].score;
+                    if(score>999)
+                        score = 999;
+                    scu = score%10;
+                    sct = (score/10)%100;
+                    sch = score%100;
                     coins[i].alive = false;
             }
 
@@ -233,7 +269,12 @@ void tick_elements()
         if(detect_collision(i,1) && fire[i].touched == false )
         {
             fire[i].touched = true;
-            score -= 10;
+            score -= 1000;
+            if(score>999)
+                score = 999;
+            scu = score%10;
+            sct = (score/10)%100;
+            sch = score%100;
         }
     }
 
@@ -241,6 +282,11 @@ void tick_elements()
     if(p_up.active && detect_collision_bonus())
     {
         score += 100;
+        if(score>999)
+            score = 999;
+        scu = score%10;
+        sct = (score/10)%100;
+        sch = score%100;
         //cout << "collided" << endl;
         p_up.active = false;
     }
@@ -278,6 +324,9 @@ void initGL(GLFWwindow *window, int width, int height) {
     ground      = Ground(floorHeight + 3*player.radius, -4.0);
     p_up        = Powerup(COLOR_DARKBLUE);
     magnet      = Magnet(1);
+    sc[0]       = Score(screen_center_x, -2, scu, COLOR_WHITE);
+    sc[1]       = Score(screen_center_x - 1, -2, sct, COLOR_WHITE);
+    sc[2]       = Score(screen_center_x - 2, -2, sch, COLOR_WHITE);
     // generate 4 random fire lines
     for(j=0; j<NUM_FIRES; j++)
     {
@@ -343,7 +392,7 @@ int main(int argc, char **argv)
 
     initGL (window, width, height);
     int tick_count = 2*magnet.dashIn + magnet.stay;
-    int gap = 500; // Time between departure of old magnet and arrival of new
+    int gap = 1250; // Time between departure of old magnet and arrival of new
     glfwSetScrollCallback(window, scroll_callback);
 
     /* Draw in loop */
