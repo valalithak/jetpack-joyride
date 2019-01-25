@@ -14,7 +14,7 @@ Coin::Coin(float x, float minHeight)
     float y = minHeight + diff*multiplier;
 
     float Radii[3] = {0.07,0.15,0.2};
-    float coin_score[3] = {10, 20, 30};
+    float coin_score[3] = {1, 2, 3};
     color_t Colors[3] = {COLOR_ORANGE, COLOR_YELLOW, COLOR_RED};
 
     this->position = glm::vec3(x, y, 0);

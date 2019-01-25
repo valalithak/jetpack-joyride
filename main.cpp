@@ -83,7 +83,7 @@ void draw() {
     player.draw(VP);
     tr.draw(VP);
     if(balloon.appear)
-        balloon.draw(VP);
+    balloon.draw(VP);
     magnet.draw(VP);
     sc[0].draw(VP);
     sc[1].draw(VP);
@@ -255,12 +255,15 @@ void tick_elements()
                 bmr.collided = true;
         if(bmr.collided == true && bmr.finish == false)
         {
-            score -= 100;
-            if(score>999)
-                score = 999;
+            score -= 10;
+            cout << "Boomerang collision" << endl;
+
+            if(score>99)
+                score = 99;
+
             scu = score%10;
-            sct = (score/10)%100;
-            sch = (score/100)%100;
+            sct = (score/10)%10;
+            sch = (score/100)%10;
             bmr.finish = true;
         }
         // cout << player.position.x << " " << p_up.position.x << endl;
@@ -274,11 +277,12 @@ void tick_elements()
             if(coins[i].alive && detect_collision(i, 0))
             {
                     score+= coins[i].score;
-                    if(score>999)
-                        score = 999;
+                    if(score>99)
+                        score = 99;
+
                     scu = score%10;
-                    sct = (score/10)%100;
-                    sch = score%100;
+                    sct = (score/10)%10;
+                    sch = (score/100)%10;
                     coins[i].alive = false;
             }
 
@@ -291,24 +295,28 @@ void tick_elements()
         if(detect_collision(i,1) && fire[i].touched == false )
         {
             fire[i].touched = true;
-            score -= 1000;
-            if(score>999)
-                score = 999;
+            score -= 10;
+            cout << "fire collision" << endl;
+            if(score>99)
+                score = 99;
+
             scu = score%10;
-            sct = (score/10)%100;
-            sch = score%100;
+            sct = (score/10)%10;
+            sch = (score/100)%10;
         }
     }
 
 
     if(p_up.active && detect_collision_bonus())
     {
-        score += 100;
-        if(score>999)
-            score = 999;
+        score += 5;
+        cout << "collidded bonus 1" << endl;
+        if(score>99)
+            score = 99;
+
         scu = score%10;
-        sct = (score/10)%100;
-        sch = score%100;
+        sct = (score/10)%10;
+        sch = (score/100)%10;
         //cout << "collided" << endl;
         p_up.active = false;
     }
@@ -422,7 +430,7 @@ int main(int argc, char **argv)
 
     initGL (window, width, height);
     int tick_count = 2*magnet.dashIn + magnet.stay;
-    int gap = 1250; // Time between departure of old magnet and arrival of new
+    int gap = 1750; // Time between departure of old magnet and arrival of new
     glfwSetScrollCallback(window, scroll_callback);
 
     /* Draw in loop */
@@ -435,10 +443,10 @@ int main(int argc, char **argv)
 
 
             if(tick_count == gap + 1.5*magnet.dashIn + magnet.stay)
-           {
+            {
                tick_count=0;
                magnet.start(rand()%2 + 1);
-           }
+            }
 
 
 
