@@ -46,10 +46,10 @@ Ring::Ring(float x, float y)
         vertex_buffer_data[i*9+7] = y;
         vertex_buffer_data[i*9+8] = z;
     }
-    GLfloat vertex_buffer_data_2[180*9];
+    GLfloat vertex_buffer_data_2[360*9];
 
     float w2 = this->radius2;
-    for(int j=n/2; j<n; j++)
+    for(int j=0; j<n; j++)
     {
         float angleBefore2 = theta * j;
         float angle2 = angleBefore2 + theta;
@@ -79,7 +79,7 @@ Ring::Ring(float x, float y)
 
 
     this->object1 = create3DObject(GL_TRIANGLES, 180*3, vertex_buffer_data, color1, GL_FILL);
-    this->object2 = create3DObject(GL_TRIANGLES, 180*3, vertex_buffer_data_2, color2, GL_FILL);
+    this->object2 = create3DObject(GL_TRIANGLES, 360*3, vertex_buffer_data_2, color2, GL_FILL);
 }
 
 void Ring::draw(glm::mat4 VP)
