@@ -48,10 +48,9 @@ Score::Score(float x_coord, float y_coord, int val, color_t color)
             d, 0.0f, 0.0f,
             d, -y, 0.0f,
             x+d, 0.0f, 0.0f,
-            x+d, 0.0f, 0.0f,
             d, -y, 0.0f,
             x+d, -y, 0.0f,
-
+            x+d, 0.0f, 0.0f,
         },
         //vertex_buffer_data[4] =
         {
@@ -77,20 +76,20 @@ Score::Score(float x_coord, float y_coord, int val, color_t color)
         //vertex_buffer_data[6] =
         {
             0.0f, 0.0f, 0.0f,
-            0.0f, -x, 0.0f,
-            d+x, 0.0f, 0.0f,
-            d+x, 0.0f, 0.0f,
-            d+x, -x, 0.0f,
-            0.0f, -(x), 0.0f,
+            0.0f, x, 0.0f,
+            d, 0.0f, 0.0f,
+            d, 0.0f, 0.0f,
+            d, x, 0.0f,
+            0.0f, x, 0.0f,
         }
     };
-        this->object0 = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data[0], color, GL_FILL);
-        this->object1 = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data[1], color, GL_FILL);
-        this->object2 = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data[2], color, GL_FILL);
-        this->object3 = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data[3], color, GL_FILL);
-        this->object4 = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data[4], color, GL_FILL);
-        this->object5 = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data[5], color, GL_FILL);
-        this->object6 = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data[6], color, GL_FILL);
+        this->object0 = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data[0], color, GL_FILL);
+        this->object1 = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data[1], color, GL_FILL);
+        this->object2 = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data[2], color, GL_FILL);
+        this->object3 = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data[3], color, GL_FILL);
+        this->object4 = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data[4], color, GL_FILL);
+        this->object5 = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data[5], color, GL_FILL);
+        this->object6 = create3DObject(GL_TRIANGLES, 6, vertex_buffer_data[6], color, GL_FILL);
 }
 
 void Score::draw(glm::mat4 VP)
@@ -115,9 +114,9 @@ void Score::draw(glm::mat4 VP)
     if(this->val == 2){
         draw3DObject(this->object1);
         draw3DObject(this->object2);
-        draw3DObject(this->object6);
         draw3DObject(this->object5);
         draw3DObject(this->object4);
+        draw3DObject(this->object6);
     }
     if(this->val == 3){
         draw3DObject(this->object1);

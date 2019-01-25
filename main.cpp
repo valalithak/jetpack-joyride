@@ -236,6 +236,9 @@ void tick_elements()
     {
         tr.position.x = player.position.x;
         tr.position.y = player.position.y - 0.7;
+        sc[0].position.x = player.position.x;
+        sc[1].position.x = player.position.x - 0.5;
+        sc[2].position.x = player.position.x - 1;
     }
     p_up.tick();//tr.tick();
     p_up2.tick();
