@@ -258,8 +258,10 @@ void tick_elements()
             score -= 10;
             cout << "Boomerang collision" << endl;
 
-            if(score>99)
-                score = 99;
+            if(score>999)
+                score = 999;
+            //if(score<0)
+            //    score = 0;
 
             scu = score%10;
             sct = (score/10)%10;
@@ -277,8 +279,10 @@ void tick_elements()
             if(coins[i].alive && detect_collision(i, 0))
             {
                     score+= coins[i].score;
-                    if(score>99)
-                        score = 99;
+                    if(score>999)
+                        score = 999;
+                    //if(score<0)
+                    //    score = 0;
 
                     scu = score%10;
                     sct = (score/10)%10;
@@ -292,17 +296,24 @@ void tick_elements()
 
     for(i=0; i<NUM_FIRES; i++)
     {
+        //while(player.position.x > 4*i + 3)
+        //    i++;
         if(detect_collision(i,1) && fire[i].touched == false )
         {
             fire[i].touched = true;
-            score -= 10;
-            cout << "fire collision" << endl;
-            if(score>99)
-                score = 99;
-
+            score -= 5;
+            cout << "fire collision location" << endl;
+            cout << fire[i].x1 << " " << fire[i].y1 << endl;
+            cout << fire[i].x2 << " " << fire[i].y2 << endl;
+            cout << player.position.x << " " << player.position.y << endl;
+            if(score>999)
+                score = 999;
+            //if(score<0)
+            //    score = 0;
             scu = score%10;
             sct = (score/10)%10;
             sch = (score/100)%10;
+            break;
         }
     }
 
@@ -311,8 +322,8 @@ void tick_elements()
     {
         score += 5;
         cout << "collidded bonus 1" << endl;
-        if(score>99)
-            score = 99;
+        if(score>999)
+            score = 999;
 
         scu = score%10;
         sct = (score/10)%10;
@@ -353,7 +364,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
 
-    player      = Ball(0, 0.7,0.2, COLOR_GREY);
+    player      = Ball(0, 0.7, 0.2, COLOR_GREY);
     tr          = Triangle(COLOR_YELLOW);
     bmr         = Boomerang(COLOR_BLACK);
     ground      = Ground(floorHeight + 3*player.radius, -4.0);
@@ -369,21 +380,29 @@ void initGL(GLFWwindow *window, int width, int height) {
     for(j=0; j<NUM_FIRES; j++)
     {
 
-        if(j%2==0 || j%7 == 0) // it is a fire beam
+        if(j%2==0) // it is a fire beam
         {
             float yfire_1      = 1.5;
-            float xfire_1      = 4*j + rand()%5 + 5;
-            float xfire_2      = xfire_1 + 2.5;
+            float xfire_1      = 4*j+1;
+            float xfire_2      = xfire_1 + 3;
             float yfire_2      = yfire_1;
             fire[j]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
             fire[j].beam = true;
         }
-        else // it is a fire line
+        else if(j%7==0) // it is a fire line
         {
-            float yfire_1      = 1.7 + rand()%2 + 0.1;
-            float xfire_1      = 4*j + rand()%5 + 5;
-            float xfire_2      = xfire_1 + 2.5;
-            float yfire_2      = yfire_1 + rand()%3 - 0.4;
+            float yfire_1      = 2;
+            float xfire_1      = 4*j + 1;
+            float xfire_2      = xfire_1 + 3;
+            float yfire_2      = yfire_1 - 0.4;
+            fire[j]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
+        }
+        else  // it is a fire line
+        {
+            float yfire_1      = 2;
+            float xfire_1      = 4*j + 1;
+            float xfire_2      = xfire_1 + 3;
+            float yfire_2      = yfire_1 + 0.3;
             fire[j]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
         }
 
@@ -491,9 +510,29 @@ bool detect_collision(int i, int type)
     }
     if(type == 1)
     {
+        int xflag = 0;
+        int yflag = 0;
+
         Fire f= fire[i];
         //if(player.speedVertical > 0) return false;
-        if(player.position.x >= f.x1 && player.position.x <= f.x2 && player.position.y >= f.y1 && player.position.y <= f.y2+0.15)
+        if(player.position.x >= 4*i && player.position.x <= 4*i + 4)
+            xflag = 1;
+        if(i%2==0)
+        {
+            if(player.position.y >= 1.4 && player.position.y <= 1.6)
+            yflag = 1;
+        }
+        else if(i%7==0)
+        {
+            if(player.position.y >= 1.55 && player.position.y <= 2.05)
+                yflag = 1;
+        }
+        else
+        {
+            if(player.position.y >= 1.95 && player.position.y <= 2.35)
+                yflag = 1;
+        }
+        if(xflag==1 && yflag ==1)
             return true;
         return false;
     }

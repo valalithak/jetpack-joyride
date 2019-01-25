@@ -14,19 +14,31 @@ Poweruptwo::Poweruptwo(color_t color) {
     speed = 0.08; // Speed of left-right key press in air
 
 
-    GLfloat vertex_buffer_data[9];
+    GLfloat vertex_buffer_data[18];
 
     vertex_buffer_data[0] = x_coord;
     vertex_buffer_data[1] = y_coord;
     vertex_buffer_data[2] = 0;
 
-    vertex_buffer_data[3] = x_coord-0.25;
+    vertex_buffer_data[3] = x_coord-0.4;
     vertex_buffer_data[4] = y_coord;
     vertex_buffer_data[5] = 0;
 
-    vertex_buffer_data[6] = x_coord+0.25;
-    vertex_buffer_data[7] = y_coord + 0.25;
+    vertex_buffer_data[6] = x_coord+0.4;
+    vertex_buffer_data[7] = y_coord + 0.4;
     vertex_buffer_data[8] = 0;
+
+    vertex_buffer_data[9] = x_coord+0.4;
+    vertex_buffer_data[10] = y_coord + 0.4;
+    vertex_buffer_data[11] = 0;
+
+    vertex_buffer_data[12] = x_coord;
+    vertex_buffer_data[13] = y_coord + 0.4;
+    vertex_buffer_data[14] = 0;
+
+    vertex_buffer_data[15] = x_coord;
+    vertex_buffer_data[16] = y_coord;
+    vertex_buffer_data[17] = 0;
 
 
     this->object = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data, color, GL_FILL);
