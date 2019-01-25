@@ -11,6 +11,7 @@
 #include "score.h"
 #include "coin.h"
 #include "balloon.h"
+#include "ring.h"
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -35,6 +36,7 @@ Magnet magnet;
 Coin coins[NUM_COINS];
 Score sc[3];
 Balloon balloon;
+Ring ring;
 
 float floorHeight = -0.7;
 int i, j;
@@ -86,6 +88,7 @@ void draw() {
     sc[0].draw(VP);
     sc[1].draw(VP);
     sc[2].draw(VP);
+    ring.draw(VP);
 
 
     for(j=0; j<NUM_FIRES;j++){
@@ -228,7 +231,7 @@ void tick_elements()
 
 
     balloon.tick();
-    cout << "balloon : " << balloon.position.y << " " << balloon.appear << endl;
+    //cout << "balloon : " << balloon.position.y << " " << balloon.appear << endl;
     player.tick();
     {
         tr.position.x = player.position.x;
@@ -350,6 +353,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     sc[1]       = Score(screen_center_x - 1, -2, sct, COLOR_WHITE);
     sc[2]       = Score(screen_center_x - 2, -2, sch, COLOR_WHITE);
     balloon     = Balloon(0, 0);
+    ring        = Ring(20, 3);
     // generate 4 random fire lines
     for(j=0; j<NUM_FIRES; j++)
     {
