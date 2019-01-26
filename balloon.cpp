@@ -10,7 +10,7 @@ Balloon::Balloon(float x, float y)
     this->radius =  0.15;// 0.2 for player
     this->appear = false;
     color_t color = { 51, 51, 255 };
-    speed = 0.05; 
+    speed = 0.05;
 
 
     float n = 360;
@@ -76,7 +76,7 @@ void Balloon::tick()
                 w++;
                 this->position.x += this->speed;
                 this->position.y += this->speed;
-                if(w==50)
+                if(w==100)
                 {
                     w = 0;
                     q = 1;

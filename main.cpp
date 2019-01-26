@@ -27,7 +27,7 @@ GLFWwindow *window;
 **************************/
 
 #define NUM_COINS 250
-#define NUM_FIRES 4
+#define NUM_FIRES 8
 Ring ring;
 Ball player;
 Fire fire[NUM_FIRES+1];
