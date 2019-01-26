@@ -6,7 +6,7 @@ using namespace std;
 
 Dragon::Dragon(float a, float b)
 {
-    this->position = glm::vec3(a, b, 0);
+    this->position = glm::vec3(a-10, b, 0);
     //this->size = 0.2;
     // this->onground = true;
     speed = 0.08; // Speed of left-right key press in air
@@ -15,28 +15,28 @@ Dragon::Dragon(float a, float b)
     float side = 0.5;
     GLfloat buffer_face[18];
 
-    buffer_face[0] = a+3;
-    buffer_face[1] = b+3;
+    buffer_face[0] = a-10;
+    buffer_face[1] = b+1;
     buffer_face[2] = 0;
 
-    buffer_face[3] = a+side/2+3;
-    buffer_face[4] = b + side/2+3;
+    buffer_face[3] = a+side/2-10;
+    buffer_face[4] = b + side/2+1;
     buffer_face[5] = 0;
 
-    buffer_face[6] = a+3;
-    buffer_face[7] = b+side+3;
+    buffer_face[6] = a-10;
+    buffer_face[7] = b+side+1;
     buffer_face[8] = 0;
 
-    buffer_face[9]  =a+3;
-    buffer_face[10] = b+side+3;
+    buffer_face[9]  =a-10;
+    buffer_face[10] = b+side+1;
     buffer_face[11] = 0;
 
-    buffer_face[12] = a+3;
-    buffer_face[13] = b+3;
+    buffer_face[12] = a-10;
+    buffer_face[13] = b+1;
     buffer_face[14] = 0;
 
-    buffer_face[15] = a-side/2+3;
-    buffer_face[16] = b + side/2+3;
+    buffer_face[15] = a-side/2-10;
+    buffer_face[16] = b + side/2+1;
     buffer_face[17] = 0;
 
 

@@ -1,20 +1,21 @@
 #include "ball.h"
+#include "ring.h"
 #include "main.h"
 #include<bits/stdc++.h>
 
 using namespace std;
 
+float degree = 180;
+
 Ball::Ball(float x, float y, float rad, color_t color) {
     this->position = glm::vec3(x, y, 0);
+    this->inring = false;
     this->radius = rad; // 0.2 for player
     this->onground = true;
-
+    //this->inring_radius = 0;
     speed = 0.2; // Speed of left-right key press in air
 
     acc_g = 0.1; // Gravity acceleration
-    
-
-    this->speedHoriz = 0.0;
 
     float n = 360;
     float r = this->radius;
@@ -68,24 +69,44 @@ void Ball::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
 }
 
-void Ball::tick() {
+void Ball::tick(float rx, float ry, float r1, float r2) {
     //this->ground = false;
-
-    if(this->onground == false)
+    if(this->inring == false)
     {
-        this->position.y -= acc_g;
-        //cout << 1 << endl;
-    }
-    if(this->position.y >= (floorHeight + 22*this->radius)/screen_zoom){
-        this->position.y = (floorHeight + 22*this->radius)/screen_zoom;
-        //cout << 2 << endl;
-    }
-    if(this->position.y <= 0.6){
-        this->onground = true;
-        this->position.y = 0.6;
+        if(this->onground == false)
+            this->position.y -= acc_g;
+
+
+        if(this->position.y >= (floorHeight + 22*this->radius)/screen_zoom)
+            this->position.y = (floorHeight + 22*this->radius)/screen_zoom;
+
+
+        if(this->position.y <= 0.6){
+            this->onground = true;
+            this->position.y = 0.6;
         //cout << 3 << endl;
+        }
     }
 
+    else
+    {
 
+            cout << "check" << endl;
+            this->inring_radius = (r2)/2;
+            float angle_rad = 3.14159/180;
 
+            if(degree>0)
+            {
+                this->position.x = rx + 0.05+ this->inring_radius*cos(angle_rad*degree)/screen_zoom;
+                this->position.y = ry -  this->inring_radius*(sin(angle_rad*degree)/screen_zoom);
+                degree-=0.3;
+                cout << degree << endl;
+            }
+            if(degree<=0){
+                this->inring = false;
+                degree = 180;
+                cout << "false" << endl;
+            }
+
+    }
 }

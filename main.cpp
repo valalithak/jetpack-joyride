@@ -26,6 +26,7 @@ GLFWwindow *window;
 
 #define NUM_COINS 250
 #define NUM_FIRES 4 // 4 fire beams and 4 fire lines
+Ring ring;
 Ball player;
 Fire fire[NUM_FIRES];
 Triangle tr;
@@ -37,7 +38,7 @@ Magnet magnet;
 Coin coins[NUM_COINS];
 Score sc[3];
 Balloon balloon;
-Ring ring;
+
 Dragon dr;
 
 float floorHeight = -0.7;
@@ -82,6 +83,7 @@ void draw() {
 
     // Scene render
     ground.draw(VP);
+    ring.draw(VP);
     player.draw(VP);
     tr.draw(VP);
     if(balloon.appear){
@@ -92,7 +94,7 @@ void draw() {
     sc[0].draw(VP);
     sc[1].draw(VP);
     sc[2].draw(VP);
-    ring.draw(VP);
+
     dr.draw(VP);
 
     for(j=0; j<NUM_FIRES;j++){
@@ -212,7 +214,7 @@ void pan_down()
 void tick_elements()
 {
     magnet.tick();
-    if(magnet.field == true)
+    if(magnet.field == true && player.inring == false)
     {
         if(player.position.y > 2)
         {
@@ -236,7 +238,7 @@ void tick_elements()
 
     balloon.tick();
     //cout << "balloon : " << balloon.position.y << " " << balloon.appear << endl;
-    player.tick();
+    player.tick(ring.position.x, ring.position.y, ring.radius1, ring.radius2);
     {
         tr.position.x = player.position.x;
         tr.position.y = player.position.y - 0.7;
@@ -279,6 +281,29 @@ void tick_elements()
         // cout << player.position.x << " " << p_up.position.x << endl;
         // cout << player.position.y << " " << p_up.position.y << endl;
     }
+    // PATH OF PLAYER IN RING
+    if(player.position.x >= ring.position.x - ring.radius1 && player.position.x <=ring.position.x - ring.radius2 && player.position.y >= ring.position.y){
+        cout << " ring matched " << endl;
+        player.inring = true;
+    }
+        /*if(player.inring)
+        {
+            cout << "check" << endl;
+            player.inring_radius = (ring.radius1 - ring.radius2)/2;
+            float angle_rad = 3.14159/180;
+            float degree = 180;
+            while(degree>0)
+            {
+                player.position.x = ring.position.x + cos(angle_rad*degree)/screen_zoom;
+                player.position.y = ring.position.y + sin(angle_rad*degree)/screen_zoom;
+                degree-=0.1;
+                cout << degree << endl;
+            }
+            if(degree<=0){
+                player.inring = false;
+                cout << "false" << endl;
+            }
+        }*/
 
     if((player.position.y > 0.7))
     {
@@ -379,6 +404,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     // Create the models
 
     player      = Ball(0, 0.7, 0.2, COLOR_GREY);
+    ring        = Ring(20, 3);
     tr          = Triangle(COLOR_YELLOW);
     bmr         = Boomerang(COLOR_BLACK);
     ground      = Ground(floorHeight + 3*player.radius, -4.0);
@@ -389,7 +415,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     sc[1]       = Score(screen_center_x - 1, -2, sct, COLOR_WHITE);
     sc[2]       = Score(screen_center_x - 2, -2, sch, COLOR_WHITE);
     balloon     = Balloon(0, 0);
-    ring        = Ring(20, 3);
+
     dr          = Dragon(50, 3);
     for(j=1; j<=NUM_FIRES; j++)
     {

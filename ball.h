@@ -12,17 +12,15 @@ public:
     float radius;
     void draw(glm::mat4 VP);
     void set_position(float x, float y);
-    void tick();
+    void tick(float rx, float ry, float r1, float r2);
 
     void magTick(int type);
     double speed;
-    double speedVertical;
-    double speedVerticalDown;
-    bool goDown;
     double acc_g;
-    double initVelocity;
     bool onground;
-    float speedHoriz;
+    bool inring;
+    float inring_radius;
+
 private:
     VAO *object;
 };
