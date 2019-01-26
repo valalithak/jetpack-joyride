@@ -15,6 +15,7 @@
 #include "dragon.h"
 #include "dragon_face.h"
 #include "ice.h"
+#include "shield.h"
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -41,7 +42,7 @@ Coin coins[NUM_COINS];
 Score sc[3];
 Score level;
 Balloon balloon;
-
+Shield shield;
 Dragon dr;
 Dragon eye1;
 Dragon eye2;
@@ -110,6 +111,8 @@ void draw() {
     eye2.draw(VP);
     if(ice.appear)
         ice.draw(VP);
+    if(shield.in_action)
+        shield.draw(VP);
 
 
 
@@ -139,6 +142,7 @@ void tick_input(GLFWwindow *window) {
     int A  = glfwGetKey(window, GLFW_KEY_A);
     int D = glfwGetKey(window, GLFW_KEY_D);
     int B = glfwGetKey(window, GLFW_KEY_B);
+    int S = glfwGetKey(window, GLFW_KEY_S);
     int space = glfwGetKey(window, GLFW_KEY_SPACE);
     if (A) {
         player.position.x -= 0.3*player.speed;
@@ -159,6 +163,9 @@ void tick_input(GLFWwindow *window) {
         player.position.y += player.speed;
         tr.onground = false;
         tr.position.y += player.speed;
+    }
+    if (S) {
+        shield.in_action = true;
     }
 
     int LEFT  = glfwGetKey(window, GLFW_KEY_LEFT);
@@ -231,6 +238,11 @@ void tick_elements()
 {
     //cout << "player x " << player.position.x << " "<< "player y " << player.position.y << endl;
     dr.tick();
+    shield.tick();
+    if(shield.in_action){
+        shield.position.x = player.position.x;
+        shield.position.y = player.position.y;
+    }
     face.position.x = dr.position.x;
     face.position.y = dr.position.y+0.75;
     eye1.position.x = face.position.x-0.3;
@@ -464,6 +476,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     sc[2]       = Score(screen_center_x - 2, -2, sch, COLOR_WHITE);
     level       = Score(screen_center_x-1, -3, lev,COLOR_WHITE );
     balloon     = Balloon(0, 0);
+    shield      = Shield(COLOR_DARKBLUE);
 
     dr          = Dragon(48, 3, COLOR_GREEN);
     eye1         = Dragon(0,0.4, COLOR_BLACK);
@@ -679,12 +692,12 @@ bool detect_balloon_fire(int i)
     //if(player.speedVertical > 0) return false;
     if(balloon.position.x >= 4*(i+1) && balloon.position.x <= 4*(i +1)+4)
         xflag = 1;
-    //if(i%2==0)
-    //{
+    if(i%2==0)
+    {
         if(balloon.position.y >= 1.41 && balloon.position.y <= 1.63)
         yflag = 1;
-    //}
-    /*else if(i%7==0)
+    }
+    else if(i%7==0)
     {        if(balloon.position.y >= 1.55 && balloon.position.y <= 2.05)
             yflag = 1;
     }
@@ -692,7 +705,7 @@ bool detect_balloon_fire(int i)
     {
         if(balloon.position.y >= 1.95 && balloon.position.y <= 2.35)
             yflag = 1;
-    }*/
+    }
     if(xflag==1 && yflag ==1){
         fire[i].touched = true;
         return true;
