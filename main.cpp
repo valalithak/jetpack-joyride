@@ -27,7 +27,7 @@ GLFWwindow *window;
 **************************/
 
 #define NUM_COINS 250
-#define NUM_FIRES 8 // 4 fire beams and 4 fire lines
+#define NUM_FIRES 20 // 4 fire beams and 4 fire lines
 Ring ring;
 Ball player;
 Fire fire[NUM_FIRES];
@@ -236,7 +236,7 @@ void tick_elements()
 
 
     if ((player.position.x > dr.position.x) && ice.collided == false) {
-        lev++;
+        lev = 2;
         level.val = lev;
     }
 
