@@ -39,6 +39,7 @@ Ground ground;
 Magnet magnet;
 Coin coins[NUM_COINS];
 Score sc[3];
+Score level;
 Balloon balloon;
 
 Dragon dr;
@@ -52,6 +53,7 @@ int i, j;
 int score = 0;
 int tick_count = 0;
 int scu, sct, sch;
+int lev = 1;
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 
 Timer t60(1.0 / 60);
@@ -100,6 +102,7 @@ void draw() {
     sc[0].draw(VP);
     sc[1].draw(VP);
     sc[2].draw(VP);
+    level.draw(VP);
     if(p_up.active)
         p_up.draw(VP);
     if(p_up2.active)
@@ -232,7 +235,10 @@ void tick_elements()
     eye2.position.y = eye1.position.y;
 
 
-
+    if ((player.position.x > dr.position.x) && ice.collided == false) {
+        lev++;
+        level.val = lev;
+    }
 
     magnet.tick();
     if(magnet.field == true && player.inring == false)
@@ -266,9 +272,8 @@ void tick_elements()
     if(ice_collision() && ice.collided == false)
     {
         cout << "ICE COLLISION" << endl;
-        score -= 20;
-        if(score>999)
-            score = 999;
+        score = 0;
+
         ice.collided == true;
         //if(score<0)
         //    score = 0;
@@ -286,6 +291,7 @@ void tick_elements()
         sc[0].position.x = player.position.x;
         sc[1].position.x = player.position.x - 0.5;
         sc[2].position.x = player.position.x - 1;
+        level.position.x = sc[1].position.x;
     }
     p_up.tick();//tr.tick();
     p_up2.tick();
@@ -433,6 +439,7 @@ void tick_elements()
     sc[0].val = scu;
     sc[1].val = sct;
     sc[2].val = sch;
+    level.val = lev;
 
 }
 
@@ -452,6 +459,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     sc[0]       = Score(screen_center_x, -2, scu, COLOR_WHITE);
     sc[1]       = Score(screen_center_x - 1, -2, sct, COLOR_WHITE);
     sc[2]       = Score(screen_center_x - 2, -2, sch, COLOR_WHITE);
+    level       = Score(screen_center_x-1, -3, lev,COLOR_WHITE );
     balloon     = Balloon(0, 0);
 
     dr          = Dragon(48, 3, COLOR_GREEN);
