@@ -6,7 +6,7 @@ using namespace std;
 // DIAMOND SHAPED POWERUP WHICH SHOULD APPEAR RANDOMLY AND GIVE BONUS TO PLAYER
 Poweruptwo::Poweruptwo(color_t color) {
     this->active = true;
-    int x_coord = rand()%20 + 1;
+    int x_coord = 5 + 1;
     int y_coord =  0.75;
     this->position = glm::vec3(x_coord, y_coord, 0);
     this->size = 0.2;

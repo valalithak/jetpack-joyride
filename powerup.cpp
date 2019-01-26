@@ -6,8 +6,8 @@ using namespace std;
 // DIAMOND SHAPED POWERUP WHICH SHOULD APPEAR RANDOMLY AND GIVE BONUS TO PLAYER
 Powerup::Powerup(color_t color) {
     this->active = true;
-    int x_coord = rand()%7 + 1;
-    int y_coord =  1;
+    float x_coord = 15;
+    float y_coord =  1.1;
     this->position = glm::vec3(x_coord, y_coord, 0);
     this->size = 0.2;
     // this->onground = true;
@@ -58,46 +58,58 @@ void Powerup::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
 }
 int c = 0;
-int fl = 0;
+int l = 0;
 void Powerup::tick()
 {
 
-//    cout << "flag: " << fl << " " << "count: " << c << endl;
-
-    if(fl == 0)
+     if(l == 0)
     {
 
         this->position.x += this->speed;
         this->position.y += this->speed/4;
         c++;
-        if(c%100 == 0)
-            fl = 1;
+        if(c>=100)
+        {
+            l = 1;
+            c = 0;
+        }
     }
-    if(fl == 1)
+    if(l == 1)
     {
         this->position.x += this->speed;
         this->position.y -= this->speed/4;
 
         c++;
-        if(c%100 == 0)
-            fl = 2;
+        if(c>=100)
+        {
+            l = 2;
+            c =0;
+        }
     }
 
-    if(fl==2)
+    if(l==2)
     {
         this->position.x -= this->speed;
         this->position.y += this->speed/4;
         c++;
-        if(c%100 == 0)
-            fl = 3;
+
+
+        if(c>=100)
+        {
+            l = 3;
+            c=0;
+        }
     }
-    if(fl==3)
+    if(l==3)
     {
         this->position.x -= this->speed;
         this->position.y -= this->speed/4;
         c++;
-        if(c%100 == 0)
-            fl = 0;
+        if(c>=100)
+        {
+            l = 0;
+            c=0;
+        }
     }
 
 }

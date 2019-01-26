@@ -75,7 +75,7 @@ void pan_down();
 void jump();
 float abso(float x);
 bool detect_collision(int i, int type);
-bool detect_collision_bonus();
+bool detect_collision_bonus(int p);
 bool detect_balloon_fire(int i);
 
 // ---- Colors ----

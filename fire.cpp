@@ -15,7 +15,7 @@ Fire::Fire(color_t color, float x1, float y1, float x2, float y2)
     this->size = 0.2;
     this->radius = 0.2;
     this->touched = false;
-    
+
     speed = 0.05;
 
 
@@ -50,40 +50,8 @@ Fire::Fire(color_t color, float x1, float y1, float x2, float y2)
     float r = this->radius;
     float theta = 2*3.14159/n;
 
-        /*GLfloat vertex_buffer_data2[360*9];
 
-        int i;
-        for(i=0; i<n; i++)
-        {
-                float angleBefore = theta * i;
-                float angle = angleBefore + theta;
-
-                float x = r * cos(angle);
-                float y = r * sin(angle);
-                float z = 0.0f;
-
-                float x1 = r * cos(angleBefore);
-                float y1 = r * sin(angleBefore);
-                float z1 = 0.0f;
-
-                float x2 = 0.0f;
-                float y2 = 0.0f;
-                float z2 = 0.0f;
-
-                vertex_buffer_data2[i*9] = x2;
-                vertex_buffer_data2[i*9+1] = y2;
-                vertex_buffer_data2[i*9+2] = z2;
-                vertex_buffer_data2[i*9+3] = x1;
-                vertex_buffer_data2[i*9+4] = y1;
-                vertex_buffer_data2[i*9+5] = z1;
-                vertex_buffer_data2[i*9+6] = x;
-                vertex_buffer_data2[i*9+7] = y;
-                vertex_buffer_data2[i*9+8] = z;
-        }
-
-
-        this->object2 = create3DObject(GL_TRIANGLES, 360*3, vertex_buffer_data, color, GL_FILL);*/
-        this->object1 = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data, color, GL_FILL);
+    this->object1 = create3DObject(GL_TRIANGLES, 9, vertex_buffer_data, color, GL_FILL);
 }
 
 void Fire::draw(glm::mat4 VP) {
@@ -108,7 +76,7 @@ void Fire::tick()
     {
         if(f==0)
         {
-            //float var = (rand()%3)/10 + 0.1;
+            
             t++;
             this->position.y += speed;
             if(t==100)
@@ -119,7 +87,7 @@ void Fire::tick()
         }
         if(f == 1)
         {
-            //float var = (rand()%3)/10 + 0.1;
+
             t++;
             this->position.y -= speed;
             if(t==100)
