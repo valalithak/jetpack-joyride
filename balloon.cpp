@@ -10,7 +10,7 @@ Balloon::Balloon(float x, float y)
     this->radius =  0.15;// 0.2 for player
     this->appear = false;
     color_t color = { 51, 51, 255 };
-    speed = 0.05; // Speed of left-right key press in air
+    speed = 0.05; 
 
 
     float n = 360;

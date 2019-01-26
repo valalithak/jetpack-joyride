@@ -70,7 +70,7 @@ void Ice::tick()
 {
     if(this->appear)
     {
-            cout << "ice @ " << this->position.y << endl;
+            //scout << "ice @ " << this->position.y << endl;
             if(this->position.y >= 0.5)
             {
 

@@ -7,11 +7,10 @@ using namespace std;
 Poweruptwo::Poweruptwo(color_t color) {
     this->active = true;
     int x_coord = 5 + 1;
-    int y_coord =  0.75;
+    int y_coord =  5;
     this->position = glm::vec3(x_coord, y_coord, 0);
-    this->size = 0.2;
-    // this->onground = true;
-    speed = 0.08; // Speed of left-right key press in air
+    this->size = 0.1;
+    speed = 0.05;
 
 
     GLfloat vertex_buffer_data[18];
@@ -61,8 +60,7 @@ int fl2 = 0;
 void Poweruptwo::tick()
 {
 
-//    cout << "flag: " << fl << " " << "count: " << c << endl;
-
+    //cout << "p2 x : " <<  this->position.x << " "  << "p2 y : " <<  this->position.y << endl;
     if(fl2 == 0)
     {
 
@@ -75,7 +73,7 @@ void Poweruptwo::tick()
     if(fl2 == 1)
     {
         this->position.x += this->speed;
-        this->position.y -= this->speed/4;
+        this->position.y -= this->speed/2;
 
         c2++;
         if(c2%100 == 0)
@@ -85,7 +83,7 @@ void Poweruptwo::tick()
     if(fl2==2)
     {
         this->position.x -= this->speed;
-        this->position.y += this->speed/4;
+        this->position.y += this->speed/2;
         c2++;
         if(c2%100 == 0)
             fl2 = 3;
@@ -93,7 +91,7 @@ void Poweruptwo::tick()
     if(fl2==3)
     {
         this->position.x -= this->speed;
-        this->position.y -= this->speed/4;
+        this->position.y -= this->speed/2;
         c2++;
         if(c2%100 == 0)
             fl2 = 0;

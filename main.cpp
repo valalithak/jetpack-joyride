@@ -27,10 +27,10 @@ GLFWwindow *window;
 **************************/
 
 #define NUM_COINS 250
-#define NUM_FIRES 20 // 4 fire beams and 4 fire lines
+#define NUM_FIRES 4
 Ring ring;
 Ball player;
-Fire fire[NUM_FIRES];
+Fire fire[NUM_FIRES+1];
 Triangle tr;
 Boomerang bmr;
 Powerup p_up;
@@ -94,10 +94,7 @@ void draw() {
     ring.draw(VP);
     player.draw(VP);
     tr.draw(VP);
-    if(balloon.appear){
-        balloon.draw(VP);
-        cout << "balloon x : " << balloon.position.x << " " << "balloon y : " << balloon.position.y << endl;
-    }
+
     magnet.draw(VP);
     sc[0].draw(VP);
     sc[1].draw(VP);
@@ -114,10 +111,6 @@ void draw() {
     if(ice.appear)
         ice.draw(VP);
 
-    for(j=0; j<NUM_FIRES;j++){
-        if(fire[j].touched == false)
-        fire[j].draw(VP);
-    }
 
 
     if(bmr.collided == false && bmr.finish == false && player.position.x > 8)
@@ -129,6 +122,15 @@ void draw() {
         if(coins[i].position.y > 5/ screen_zoom)
             coins[i].position.y = (rand()%2 +2)/screen_zoom;
         if(coins[i].alive) {coins[i].draw(VP);}
+    }
+    for(j=0; j<NUM_FIRES;j++){
+        if(fire[j].touched == false)
+        fire[j].draw(VP);
+    }
+
+    if(balloon.appear){
+        balloon.draw(VP);
+        cout << "balloon x : " << balloon.position.x << " " << "balloon y : " << balloon.position.y << endl;
     }
 
 }
@@ -227,6 +229,7 @@ void pan_down()
 
 void tick_elements()
 {
+    //cout << "player x " << player.position.x << " "<< "player y " << player.position.y << endl;
     face.position.x = dr.position.x;
     face.position.y = dr.position.y+0.75;
     eye1.position.x = face.position.x-0.3;
@@ -357,7 +360,7 @@ void tick_elements()
 
     }
 
-    for(i=0; i<NUM_FIRES; i++)
+    for(i=1; i<=NUM_FIRES; i++)
     {
         //while(player.position.x > 4*i + 3)
         //    i++;
@@ -365,10 +368,10 @@ void tick_elements()
         {
             fire[i].touched = true;
             score -= 5;
-            cout << "fire collision location" << endl;
+            cout << "fire" << i << " " <<  "collision location" << endl;
             cout << fire[i].x1 << " " << fire[i].y1 << endl;
             cout << fire[i].x2 << " " << fire[i].y2 << endl;
-            cout << player.position.x << " " << player.position.y << endl;
+            cout << player.position.x << " " << player.position.y << endl << endl;
             if(score>999)
                 score = 999;
             //if(score<0)
@@ -376,7 +379,6 @@ void tick_elements()
             scu = score%10;
             sct = (score/10)%10;
             sch = (score/100)%10;
-            break;
         }
     }
 
@@ -410,7 +412,7 @@ void tick_elements()
     for(int x = 0; x<NUM_FIRES; x++){
     if(detect_balloon_fire(x))
         {
-            cout << "yes" << endl;
+            //cout << "collided fire" << x << " " << "at " << fire[x].position.x << " " << fire[x].position.y << endl;
             fire[x].touched = true;
         }
     }
@@ -470,16 +472,16 @@ void initGL(GLFWwindow *window, int width, int height) {
     for(j=1; j<=NUM_FIRES; j++)
     {
 
-        if(j%2==0) // it is a fire beam
-        {
+        //if(j%2==0) // it is a fire beam
+        //{
             float yfire_1      = 1.5;
             float xfire_1      = 4*j+1;
             float xfire_2      = xfire_1 + 3;
             float yfire_2      = yfire_1;
             fire[j-1]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
             fire[j-1].beam = true;
-        }
-        else if(j%7==0) // it is a fire line
+        //}
+        /*else if(j%7==0) // it is a fire line
         {
             float yfire_1      = 2;
             float xfire_1      = 4*j + 1;
@@ -494,10 +496,11 @@ void initGL(GLFWwindow *window, int width, int height) {
             float xfire_2      = xfire_1 + 3;
             float yfire_2      = yfire_1 + 0.3;
             fire[j-1]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
-        }
+        }*/
 
 
     }
+
 
     //cout << player.position.y << endl;
 
@@ -617,12 +620,12 @@ bool detect_collision(int i, int type)
         //if(player.speedVertical > 0) return false;
         if(player.position.x >= 4*(i+1)+1 && player.position.x <= 4*(i + 1)+4)
             xflag = 1;
-        if(i%2==0)
-        {
+        //if(i%2==0)
+        //{
             if(player.position.y >= 1.4 && player.position.y <= 1.6)
             yflag = 1;
-        }
-        else if(i%7==0)
+        //}
+        /*else if(i%7==0)
         {
             if(player.position.y >= 1.57 && player.position.y <= 2)
                 yflag = 1;
@@ -631,7 +634,7 @@ bool detect_collision(int i, int type)
         {
             if(player.position.y >= 1.95 && player.position.y <= 2.35)
                 yflag = 1;
-        }
+        }*/
         if(xflag==1 && yflag ==1)
             return true;
         return false;
@@ -654,7 +657,7 @@ bool detect_collision_bonus(int p)
     }
     if(p==2)
     {
-        if(abso(player.position.x - p_up2.position.x) <= player.radius + p_up2.size && abso(player.position.y - p_up2.position.y) <= player.radius + p_up2.size)
+        if(abso(player.position.x - p_up2.position.x) <= player.radius && abso(player.position.y - p_up2.position.y) <= player.radius)
             return true;
         return false;
     }

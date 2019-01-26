@@ -11,7 +11,7 @@ Fire::Fire(color_t color, float x1, float y1, float x2, float y2)
     this->x2 = x2;
     this->y1 = y1;
     this->y2 = y2;
-    this->position = glm::vec3(min(x1,x2), min(y1,y2), 0);
+    this->position = glm::vec3(x1, y1, 0);
     this->size = 0.2;
     this->radius = 0.2;
     this->touched = false;
@@ -72,6 +72,7 @@ bool f = 0;
 
 void Fire::tick()
 {
+
     if(this->touched==false){
         if(this->beam)
         {
@@ -99,7 +100,7 @@ void Fire::tick()
             }
         }
     }
-    
+
 
     return;
 }

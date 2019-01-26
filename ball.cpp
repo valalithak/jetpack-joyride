@@ -12,9 +12,7 @@ Ball::Ball(float x, float y, float rad, color_t color) {
     this->inring = false;
     this->radius = rad; // 0.2 for player
     this->onground = true;
-    //this->inring_radius = 0;
-    speed = 0.2; // Speed of left-right key press in air
-
+    speed = 0.2;
     acc_g = 0.1; // Gravity acceleration
 
     float n = 360;
@@ -91,7 +89,7 @@ void Ball::tick(float rx, float ry, float r1, float r2) {
     else
     {
 
-            cout << "check" << endl;
+            //cout << "check" << endl;
             this->inring_radius = (r2)/2;
             float angle_rad = 3.14159/180;
 
@@ -100,12 +98,12 @@ void Ball::tick(float rx, float ry, float r1, float r2) {
                 this->position.x = rx + 0.05+ this->inring_radius*cos(angle_rad*degree)/screen_zoom;
                 this->position.y = ry -  this->inring_radius*(sin(angle_rad*degree)/screen_zoom);
                 degree-=0.3;
-                cout << degree << endl;
+                //cout << degree << endl;
             }
             if(degree<=0){
                 this->inring = false;
                 degree = 180;
-                cout << "false" << endl;
+                //cout << "false" << endl;
             }
 
     }
