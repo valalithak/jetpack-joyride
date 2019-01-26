@@ -230,6 +230,7 @@ void pan_down()
 void tick_elements()
 {
     //cout << "player x " << player.position.x << " "<< "player y " << player.position.y << endl;
+    dr.tick();
     face.position.x = dr.position.x;
     face.position.y = dr.position.y+0.75;
     eye1.position.x = face.position.x-0.3;

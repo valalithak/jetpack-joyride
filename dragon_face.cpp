@@ -56,11 +56,31 @@ void Dragon_face::draw(glm::mat4 VP) {
 void Dragon_face::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
 }
-
+int v = 0;
+int g= 0;
 void Dragon_face::tick()
 {
 
-//    cout << "flag: " << fl << " " << "count: " << c << endl;
+    if(g==0)
+    {
+        this->position.y += this->speed;
+        v++;
+        if(v==50)
+        {
+            v = 0;
+            g = 1;
+        }
+    }
+    if(g==1)
+    {
+        this->position.y -= this->speed;
+        v++;
+        if(v==50)
+        {
+            v = 0;
+            g = 0;
+        }
+    }
 
 
 

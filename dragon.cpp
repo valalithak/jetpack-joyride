@@ -7,41 +7,10 @@ using namespace std;
 Dragon::Dragon(float a, float b, color_t color1)
 {
     this->position = glm::vec3(a, b, 0);
-    //this->size = 0.2;
-    // this->onground = true;
-    speed = 0.08; // Speed of left-right key press in air
-
+    speed = 0.08;
 
     float side = 0.5;
-    /*GLfloat buffer_face[18];
 
-    buffer_face[0] = a;
-    buffer_face[1] = b;
-    buffer_face[2] = 0;
-
-    buffer_face[3] = a+side/2;
-    buffer_face[4] = b + side/2;
-    buffer_face[5] = 0;
-
-    buffer_face[6] = a;
-    buffer_face[7] = b+side;
-    buffer_face[8] = 0;
-
-    buffer_face[9]  = a;
-    buffer_face[10] = b+side;
-    buffer_face[11] = 0;
-
-    buffer_face[12] = a;
-    buffer_face[13] = b;
-    buffer_face[14] = 0;
-
-    buffer_face[15] = a-side/2;
-    buffer_face[16] = b + side/2;
-    buffer_face[17] = 0;
-
-
-
-    this->object1 = create3DObject(GL_TRIANGLES, 9, buffer_face, color1, GL_FILL);*/
     float n = 360;
     float r = b/4;
     float theta = 2*3.14159/n;
@@ -93,12 +62,30 @@ void Dragon::draw(glm::mat4 VP) {
 void Dragon::set_position(float x, float y) {
     this->position = glm::vec3(x, y, 0);
 }
-
+int u = 0; // count
+int n = 0; // flag
 void Dragon::tick()
 {
-
-//    cout << "flag: " << fl << " " << "count: " << c << endl;
-
+        if(n==0)
+        {
+            this->position.y += this->speed;
+            u++;
+            if(u==50)
+            {
+                u = 0;
+                n = 1;
+            }
+        }
+        if(n==1)
+        {
+            this->position.y -= this->speed;
+            u++;
+            if(u==50)
+            {
+                u = 0;
+                n = 0;
+            }
+        }
 
 
 }
