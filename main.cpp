@@ -14,6 +14,7 @@
 #include "ring.h"
 #include "dragon.h"
 #include "dragon_face.h"
+#include "ice.h"
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -44,6 +45,7 @@ Dragon dr;
 Dragon eye1;
 Dragon eye2;
 Dragon_face face;
+Ice ice;
 
 float floorHeight = -0.7;
 int i, j;
@@ -106,6 +108,8 @@ void draw() {
     face.draw(VP);
     eye1.draw(VP);
     eye2.draw(VP);
+    if(ice.appear)
+        ice.draw(VP);
 
     for(j=0; j<NUM_FIRES;j++){
         if(fire[j].touched == false)
@@ -254,6 +258,11 @@ void tick_elements()
 
 
     balloon.tick();
+    if(player.position.x > dr.position.x - 5)
+        ice.appear = true;
+
+    ice.tick();
+
     //cout << "balloon : " << balloon.position.y << " " << balloon.appear << endl;
     player.tick(ring.position.x, ring.position.y, ring.radius1, ring.radius2);
     {
@@ -432,6 +441,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     eye1         = Dragon(0,0.4, COLOR_BLACK);
     eye2         = Dragon(0,0.4, COLOR_BLACK);
     face        = Dragon_face(0, 0, COLOR_GREEN);
+    ice         = Ice(48, 3.3);
     for(j=1; j<=NUM_FIRES; j++)
     {
 
@@ -521,6 +531,7 @@ int main(int argc, char **argv)
                tick_count=0;
                magnet.start(rand()%2 + 1);
             }
+
 
 
 
