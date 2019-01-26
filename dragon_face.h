@@ -1,13 +1,13 @@
 #include "main.h"
 
-#ifndef DRAGON_H
-#define DRAGON_H
+#ifndef DRAGON_FACE_H
+#define DRAGON_FACE_H
 
 
-class Dragon {
+class Dragon_face {
 public:
-    Dragon() {}
-    Dragon(float a, float b, color_t color1);
+    Dragon_face() {}
+    Dragon_face(float a, float b, color_t color1);
     glm::vec3 position;
     float size;
     void draw(glm::mat4 VP);
@@ -18,7 +18,7 @@ public:
 
 private:
     VAO *object1;
-    VAO *object2;
+
 };
 
 #endif

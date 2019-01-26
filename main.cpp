@@ -13,6 +13,7 @@
 #include "balloon.h"
 #include "ring.h"
 #include "dragon.h"
+#include "dragon_face.h"
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -40,6 +41,9 @@ Score sc[3];
 Balloon balloon;
 
 Dragon dr;
+Dragon eye1;
+Dragon eye2;
+Dragon_face face;
 
 float floorHeight = -0.7;
 int i, j;
@@ -98,7 +102,10 @@ void draw() {
         p_up.draw(VP);
     if(p_up2.active)
         p_up2.draw(VP);
-
+    dr.draw(VP);
+    face.draw(VP);
+    eye1.draw(VP);
+    eye2.draw(VP);
 
     for(j=0; j<NUM_FIRES;j++){
         if(fire[j].touched == false)
@@ -213,6 +220,16 @@ void pan_down()
 
 void tick_elements()
 {
+    face.position.x = dr.position.x;
+    face.position.y = dr.position.y+0.75;
+    eye1.position.x = face.position.x-0.3;
+    eye1.position.y = face.position.y +0.6;
+    eye2.position.x = eye1.position.x+0.6;
+    eye2.position.y = eye1.position.y;
+
+
+
+
     magnet.tick();
     if(magnet.field == true && player.inring == false)
     {
@@ -411,7 +428,10 @@ void initGL(GLFWwindow *window, int width, int height) {
     sc[2]       = Score(screen_center_x - 2, -2, sch, COLOR_WHITE);
     balloon     = Balloon(0, 0);
 
-    dr          = Dragon(50, 3);
+    dr          = Dragon(48, 3, COLOR_GREEN);
+    eye1         = Dragon(0,0.4, COLOR_BLACK);
+    eye2         = Dragon(0,0.4, COLOR_BLACK);
+    face        = Dragon_face(0, 0, COLOR_GREEN);
     for(j=1; j<=NUM_FIRES; j++)
     {
 
