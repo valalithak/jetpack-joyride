@@ -123,7 +123,7 @@ void draw() {
             coins[i].position.y = (rand()%2 +2)/screen_zoom;
         if(coins[i].alive) {coins[i].draw(VP);}
     }
-    for(j=0; j<NUM_FIRES;j++){
+    for(j=1; j<=NUM_FIRES;j++){
         if(fire[j].touched == false)
         fire[j].draw(VP);
     }
@@ -298,7 +298,7 @@ void tick_elements()
     }
     p_up.tick();//tr.tick();
     p_up2.tick();
-    for(i=0; i<NUM_FIRES; i++)
+    for(i=1; i<=NUM_FIRES; i++)
         fire[i].tick();
     if(player.position.x > bmr.radius_of_path - 5 && bmr.finish == false)
     {
@@ -409,7 +409,7 @@ void tick_elements()
         //cout << "collided" << endl;
         p_up2.active = false;
     }
-    for(int x = 0; x<NUM_FIRES; x++){
+    for(int x = 1; x<=NUM_FIRES; x++){
     if(detect_balloon_fire(x))
         {
             //cout << "collided fire" << x << " " << "at " << fire[x].position.x << " " << fire[x].position.y << endl;
@@ -472,22 +472,22 @@ void initGL(GLFWwindow *window, int width, int height) {
     for(j=1; j<=NUM_FIRES; j++)
     {
 
-        //if(j%2==0) // it is a fire beam
-        //{
+        if(j%2==0) // it is a fire beam
+        {
             float yfire_1      = 1.5;
             float xfire_1      = 4*j+1;
             float xfire_2      = xfire_1 + 3;
             float yfire_2      = yfire_1;
-            fire[j-1]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
-            fire[j-1].beam = true;
-        //}
-        /*else if(j%7==0) // it is a fire line
+            fire[j]           = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
+            fire[j].beam = true;
+        }
+        else if(j%7==0) // it is a fire line
         {
             float yfire_1      = 2;
             float xfire_1      = 4*j + 1;
             float xfire_2      = xfire_1 + 3;
             float yfire_2      = yfire_1 - 0.4;
-            fire[j-1]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
+            fire[j]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
         }
         else  // it is a fire line
         {
@@ -495,10 +495,8 @@ void initGL(GLFWwindow *window, int width, int height) {
             float xfire_1      = 4*j + 1;
             float xfire_2      = xfire_1 + 3;
             float yfire_2      = yfire_1 + 0.3;
-            fire[j-1]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
-        }*/
-
-
+            fire[j]            = Fire(COLOR_FIRE, xfire_1, yfire_1, xfire_2, yfire_2);
+        }
     }
 
 
@@ -560,9 +558,6 @@ int main(int argc, char **argv)
                magnet.start(rand()%2 + 1);
             }
 
-
-
-
             // OpenGL Draw commands
             draw();
             // Swap Frame Buffer in double buffering
@@ -620,12 +615,12 @@ bool detect_collision(int i, int type)
         //if(player.speedVertical > 0) return false;
         if(player.position.x >= 4*(i+1)+1 && player.position.x <= 4*(i + 1)+4)
             xflag = 1;
-        //if(i%2==0)
-        //{
+        if(i%2==0)
+        {
             if(player.position.y >= 1.4 && player.position.y <= 1.6)
             yflag = 1;
-        //}
-        /*else if(i%7==0)
+        }
+        else if(i%7==0)
         {
             if(player.position.y >= 1.57 && player.position.y <= 2)
                 yflag = 1;
@@ -634,7 +629,7 @@ bool detect_collision(int i, int type)
         {
             if(player.position.y >= 1.95 && player.position.y <= 2.35)
                 yflag = 1;
-        }*/
+        }
         if(xflag==1 && yflag ==1)
             return true;
         return false;
@@ -683,12 +678,12 @@ bool detect_balloon_fire(int i)
     //if(player.speedVertical > 0) return false;
     if(balloon.position.x >= 4*(i+1) && balloon.position.x <= 4*(i +1)+4)
         xflag = 1;
-    if(i%2==0)
-    {
+    //if(i%2==0)
+    //{
         if(balloon.position.y >= 1.41 && balloon.position.y <= 1.63)
         yflag = 1;
-    }
-    else if(i%7==0)
+    //}
+    /*else if(i%7==0)
     {        if(balloon.position.y >= 1.55 && balloon.position.y <= 2.05)
             yflag = 1;
     }
@@ -696,7 +691,7 @@ bool detect_balloon_fire(int i)
     {
         if(balloon.position.y >= 1.95 && balloon.position.y <= 2.35)
             yflag = 1;
-    }
+    }*/
     if(xflag==1 && yflag ==1){
         fire[i].touched = true;
         return true;
