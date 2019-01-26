@@ -72,31 +72,34 @@ bool f = 0;
 
 void Fire::tick()
 {
-    if(this->beam)
-    {
-        if(f==0)
+    if(this->touched==false){
+        if(this->beam)
         {
-            
-            t++;
-            this->position.y += speed;
-            if(t==100)
+            if(f==0)
             {
-                f = 1;
-                t =0;
-            }
-        }
-        if(f == 1)
-        {
 
-            t++;
-            this->position.y -= speed;
-            if(t==100)
+                t++;
+                this->position.y += speed;
+                if(t==100)
+                {
+                    f = 1;
+                    t =0;
+                }
+            }
+            if(f == 1)
             {
-                f = 0;
-                t = 0;
+
+                t++;
+                this->position.y -= speed;
+                if(t==100)
+                {
+                    f = 0;
+                    t = 0;
+                }
             }
         }
     }
+    
 
     return;
 }

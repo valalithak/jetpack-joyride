@@ -9,6 +9,7 @@ Ice::Ice(float x, float y)
     this->position = glm::vec3(x, y, 0);
     this->radius =  0.23;// 0.2 for player
     this->appear = false;
+    this->collided = false;
     color_t color = { 255, 255, 255 };
     speed = 0.05; // Speed of left-right key press in air
 
@@ -70,7 +71,7 @@ void Ice::tick()
     if(this->appear)
     {
             cout << "ice @ " << this->position.y << endl;
-            if(this->position.y >= 0.6)
+            if(this->position.y >= 0.5)
             {
 
                 this->position.x -= this->speed;
@@ -80,6 +81,6 @@ void Ice::tick()
             }
             else
                 this->appear = false;
-                
+
     }
 }

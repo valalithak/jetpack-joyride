@@ -14,6 +14,7 @@ public:
     void set_position(float x, float y);
     void tick();
     bool appear;
+    bool collided;
     float speed;
 
 private:

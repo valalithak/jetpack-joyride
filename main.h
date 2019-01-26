@@ -77,7 +77,7 @@ float abso(float x);
 bool detect_collision(int i, int type);
 bool detect_collision_bonus(int p);
 bool detect_balloon_fire(int i);
-
+bool ice_collision();
 // ---- Colors ----
 extern const color_t COLOR_BACKGROUND;
 extern const color_t COLOR_GREEN;

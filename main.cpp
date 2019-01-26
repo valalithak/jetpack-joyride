@@ -263,6 +263,21 @@ void tick_elements()
 
     ice.tick();
 
+    if(ice_collision() && ice.collided == false)
+    {
+        cout << "ICE COLLISION" << endl;
+        score -= 20;
+        if(score>999)
+            score = 999;
+        ice.collided == true;
+        //if(score<0)
+        //    score = 0;
+
+        scu = score%10;
+        sct = (score/10)%10;
+        sch = (score/100)%10;
+    }
+
     //cout << "balloon : " << balloon.position.y << " " << balloon.appear << endl;
     player.tick(ring.position.x, ring.position.y, ring.radius1, ring.radius2);
     {
@@ -387,8 +402,10 @@ void tick_elements()
         p_up2.active = false;
     }
     for(int x = 0; x<NUM_FIRES; x++){
-    if(detect_balloon_fire(x)){
-        cout << "yes" << endl;
+    if(detect_balloon_fire(x))
+        {
+            cout << "yes" << endl;
+            fire[x].touched = true;
         }
     }
 
@@ -561,6 +578,15 @@ float abso(float x)
     return x;
 }
 
+bool ice_collision()
+{
+    if(abso(player.position.x - ice.position.x) < (player.radius + ice.radius)
+        && player.position.y > ice.position.y
+        && player.position.y - ice.position.y <= (player.radius + ice.radius)
+        ) return true;
+    return false;
+}
+
 bool detect_collision(int i, int type)
 {
     // for coin collision, type= 0
@@ -581,7 +607,7 @@ bool detect_collision(int i, int type)
 
         Fire f= fire[i];
         //if(player.speedVertical > 0) return false;
-        if(player.position.x >= 4*(i+1)+3 && player.position.x <= 4*(i + 1)+4)
+        if(player.position.x >= 4*(i+1)+1 && player.position.x <= 4*(i + 1)+4)
             xflag = 1;
         if(i%2==0)
         {
@@ -644,7 +670,7 @@ bool detect_balloon_fire(int i)
 
     Fire f= fire[i];
     //if(player.speedVertical > 0) return false;
-    if(balloon.position.x >= 4*(i+1) && balloon.position.x <= 4*(i + 1)+4)
+    if(balloon.position.x >= 4*(i+1) && balloon.position.x <= 4*(i +1)+4)
         xflag = 1;
     if(i%2==0)
     {
@@ -652,8 +678,7 @@ bool detect_balloon_fire(int i)
         yflag = 1;
     }
     else if(i%7==0)
-    {
-        if(balloon.position.y >= 1.6 && balloon.position.y <= 2.05)
+    {        if(balloon.position.y >= 1.55 && balloon.position.y <= 2.05)
             yflag = 1;
     }
     else
