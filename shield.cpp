@@ -52,7 +52,7 @@ void Shield::tick()
     if(this->in_action)
     {
         timerr++;
-        if(timerr==250)
+        if(timerr==175)
                 this->in_action = false;
     }
 

@@ -285,9 +285,9 @@ void tick_elements()
 
     ice.tick();
 
-    if(ice_collision() && ice.collided == false)
+    if(ice_collision() && ice.collided == false && shield.in_action == false)
     {
-        cout << "ICE COLLISION" << endl;
+        //cout << "ICE COLLISION" << endl;
         score = 0;
 
         ice.collided == true;
@@ -326,7 +326,7 @@ void tick_elements()
                 bmr.collided = true;
                 cout << "second" << endl;
         }
-        if(bmr.collided == true)// && bmr.finish == false)
+        if(bmr.collided == true && shield.in_action == false)// && bmr.finish == false)
         {
             score -= 20;
             cout << "Boomerang collision" << endl;
@@ -346,7 +346,7 @@ void tick_elements()
     }
     // PATH OF PLAYER IN RING
     if(player.position.x >= ring.position.x - ring.radius1 && player.position.x <=ring.position.x - ring.radius2 && player.position.y >= ring.position.y){
-        cout << " ring matched " << endl;
+        //cout << " ring matched " << endl;
         player.inring = true;
     }
 
@@ -377,7 +377,7 @@ void tick_elements()
     {
         //while(player.position.x > 4*i + 3)
         //    i++;
-        if(detect_collision(i,1) && fire[i].touched == false )
+    if(detect_collision(i,1) && fire[i].touched == false && shield.in_action == false )
         {
             fire[i].touched = true;
             score -= 5;
